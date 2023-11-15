@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using MsEmail.API.Context;
 using MsEmail.API.Controllers;
 using System.Configuration;
@@ -17,6 +19,7 @@ namespace MsEmail.API
             builder.Services.AddDbContext<EmailContext>(db => db.UseSqlServer(connectionString));
 
             builder.Services.Configure<SmtpConfiguration>(builder.Configuration.GetSection("SmtpConfiguration"));
+            builder.Services.Configure<TokenConfiguration>(builder.Configuration.GetSection("Token"));
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -34,6 +37,7 @@ namespace MsEmail.API
 
             app.UseHttpsRedirection();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllers();
