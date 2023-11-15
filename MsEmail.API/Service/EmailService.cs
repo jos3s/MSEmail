@@ -8,11 +8,11 @@ namespace MsEmail.API.Service
 {
     public class EmailService
     {
-        private readonly EmailContext _context;
+        private readonly AppDbContext _context;
         private readonly IOptions<SmtpConfiguration> _options;
         private readonly SmtpClient _smtpClient;
 
-        public EmailService(EmailContext context, IOptions<SmtpConfiguration> options) {
+        public EmailService(AppDbContext context, IOptions<SmtpConfiguration> options) {
             _context = context;
             _options = options;
             _smtpClient = new SmtpClient
@@ -36,11 +36,8 @@ namespace MsEmail.API.Service
                 mail.To.Add(new MailAddress(email.EmailTo));
                 mail.Subject = email.Subject;
                 mail.Body = email.Body;
-
-                _smtpClient.Send(mail);
-
                 email.Status = Entities.Enums.EmailStatus.Sent;
-
+                _smtpClient.Send(mail);
             }
             catch (Exception)
             {
@@ -48,9 +45,9 @@ namespace MsEmail.API.Service
             }
             finally
             {
+                _context.Emails.Update(email);
                 _context.SaveChanges();
             }
         }
-
     }
 }
