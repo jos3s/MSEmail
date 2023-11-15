@@ -1,15 +1,16 @@
 ﻿using MsEmail.API.Entities.Enums;
+using MSEmail.Common;
 using System.ComponentModel.DataAnnotations;
 
 namespace MsEmail.API.DTO
 {
     public class EmailDTO
     {
-        [Required]
+        [Required (ErrorMessageResourceName = "REQ0001", ErrorMessageResourceType = typeof(APIMsg))]
         [EmailAddress]
         public string EmailFrom { get; set; }
 
-        [Required]
+        [Required(ErrorMessageResourceName = "REQ0001", ErrorMessageResourceType = typeof(APIMsg))]
         [EmailAddress]
         public string EmailTo { get; set; }
 
