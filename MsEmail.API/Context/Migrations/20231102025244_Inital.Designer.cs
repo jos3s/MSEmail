@@ -11,7 +11,7 @@ using MsEmail.API.Context;
 
 namespace MsEmail.API.Context.Migrations
 {
-    [DbContext(typeof(EmailContext))]
+    [DbContext(typeof(AppDbContext))]
     [Migration("20231102025244_Inital")]
     partial class Inital
     {
