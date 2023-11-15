@@ -3,31 +3,37 @@ using Microsoft.Extensions.Options;
 using MsEmail.API.Context;
 using MsEmail.API.DTO;
 using MsEmail.API.Entities;
+using MsEmail.API.Entities.Common;
 using MsEmail.API.Entities.Enums;
+using MsEmail.API.Filters;
 using MsEmail.API.Service;
+using MSEmail.Common;
 
 namespace MsEmail.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [RequisitionFilter]
     public class EmailController : ControllerBase
     {
-        private readonly EmailContext _context;
+        private readonly AppDbContext _context;
         private readonly IOptions<SmtpConfiguration> _smtp;
 
-        public EmailController(EmailContext context, IOptions<SmtpConfiguration> smtp)
+        public EmailController(AppDbContext context, IOptions<SmtpConfiguration> smtp)
         {
             _context = context;
             _smtp = smtp;
         }
 
         [HttpGet]
+        [RequisitionFilter]
         public IActionResult GetAll()
         {
             return Ok(_context.Emails.Where(x => x.DeletionDate == null));
         }
 
         [HttpGet("{id}")]
+        [RequisitionFilter]
         public IActionResult GetById(long id)
         {
             var email = _context.Emails.FirstOrDefault(x => x.Id == id);
@@ -36,6 +42,7 @@ namespace MsEmail.API.Controllers
         }
 
         [HttpPost("send")]
+        [RequisitionFilter]
         public IActionResult Post(EmailDTO emailDTO)
         {
             try
@@ -47,7 +54,6 @@ namespace MsEmail.API.Controllers
                     Subject = emailDTO.Subject,
                     Body = emailDTO.Body,
                     Status = EmailStatus.Created,
-
                 };
                 email.CreationDate = email.UpdateDate = DateTime.Now;
 
@@ -59,17 +65,22 @@ namespace MsEmail.API.Controllers
             }
             catch (Exception ex)
             {
-                return Problem();
+                var date = DateTime.Now;
+                _context.ExceptionLogs.Add(new ExceptionLog {Source = ex.Source, StackTrace = ex.StackTrace, Message = ex.Message.ToString(), CreationDate = date, UpdateDate = date });
+                _context.SaveChanges();
+                return Problem(APIMsg.ERR0001);
             }
         }
 
         [HttpDelete]
+        [RequisitionFilter]
         public IActionResult Delete(long id)
         {
             Email email = _context.Emails.FirstOrDefault(x => x.Id == id);
             if (email == null) return NotFound();
 
             email.DeletionDate = DateTime.Now;
+            _context.Emails.Update(email);
             _context.SaveChanges();
             return NoContent();
         }
