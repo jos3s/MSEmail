@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using MsEmail.API.Context;
 using MsEmail.API.DTO;
@@ -27,6 +28,7 @@ namespace MsEmail.API.Controllers
 
         [HttpGet]
         [RequisitionFilter]
+        [Authorize(Roles = "admin")]
         public IActionResult GetAll()
         {
             return Ok(_context.Emails.Where(x => x.DeletionDate == null));
@@ -34,8 +36,10 @@ namespace MsEmail.API.Controllers
 
         [HttpGet("{id}")]
         [RequisitionFilter]
+        [Authorize(Roles = "admin,user")]
         public IActionResult GetById(long id)
         {
+
             var email = _context.Emails.FirstOrDefault(x => x.Id == id);
             if (email == null) return NotFound();
             return Ok(email);
@@ -43,6 +47,7 @@ namespace MsEmail.API.Controllers
 
         [HttpPost("send")]
         [RequisitionFilter]
+        [Authorize]
         public IActionResult Post(EmailDTO emailDTO)
         {
             try
@@ -74,6 +79,7 @@ namespace MsEmail.API.Controllers
 
         [HttpDelete]
         [RequisitionFilter]
+        [Authorize]
         public IActionResult Delete(long id)
         {
             Email email = _context.Emails.FirstOrDefault(x => x.Id == id);
