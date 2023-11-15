@@ -6,6 +6,7 @@ namespace MsEmail.API.Context
 {
     public class AppDbContext : DbContext
     {
+        public DbSet<User> Users { get; set; }
         public DbSet<Email> Emails { get; set; }
         public DbSet<SystemLog> SystemLogs { get; set; }    
         public DbSet<ExceptionLog> ExceptionLogs { get; set; }
@@ -16,6 +17,13 @@ namespace MsEmail.API.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<User>(e =>
+            {
+                e.HasKey(user => user.Id);
+
+                e.Property(user => user.DeletionDate).IsRequired(false);
+            });
+
             modelBuilder.Entity<Email>(e =>
             {
                 e.HasKey(email => email.Id);
