@@ -8,14 +8,6 @@ namespace MsEmail.Domain.Entities
 
         public string Password { get; set; }
 
-        public string Role { get
-            {
-                return Role;
-            } 
-            set
-            {
-                value = "user";
-            }
-        }
+        public string Role { get; set; } = "user";
     }
 }
