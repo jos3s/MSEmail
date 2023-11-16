@@ -31,19 +31,19 @@ namespace MsEmail.API.Controllers
         [RequisitionFilter]
         [Authorize(Roles = "admin")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<Email>))]
-        public IActionResult GetAll()
+        public IActionResult GetAll(bool withDeletionDate)
         {
-            var identity = (ClaimsIdentity)User.Identity;
-            IEnumerable<Claim> claims = identity.Claims;
+            var emails = _context.Emails.ToList();
 
-            if(this.User.GetRole().Equals("admin"))
-                return Ok(_context.Emails.Where(x => x.DeletionDate == null));
+            if (withDeletionDate) 
+                return Ok(new {NumberOfEmails = emails.Count(), 
+                    Emails = emails});
 
-            var UserId = this.User.GetUserID();
-            var emails = _context.Emails.Where(x => x.CreationUserId == UserId);
-            return Ok(emails);
+            emails = emails.Where(x => x.DeletionDate == null).ToList();
+
+            return Ok(new { NumberOfEmails = emails.Count(), Emails =  emails});
         }
-        
+
         [HttpGet("my")]
         [RequisitionFilter]
         [Authorize]
@@ -94,7 +94,7 @@ namespace MsEmail.API.Controllers
             catch (Exception ex)
             {
                 var date = DateTime.Now;
-                _context.ExceptionLogs.Add(new ExceptionLog {Source = ex.Source, StackTrace = ex.StackTrace, Message = ex.Message.ToString(), CreationDate = date, UpdateDate = date });
+                _context.ExceptionLogs.Add(new ExceptionLog { Source = ex.Source, StackTrace = ex.StackTrace, Message = ex.Message.ToString(), CreationDate = date, UpdateDate = date });
                 _context.SaveChanges();
                 return Problem(APIMsg.ERR0001);
             }
