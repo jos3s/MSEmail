@@ -5,6 +5,7 @@
         public Logging Logging { get; set; }
         public string AllowedHosts { get; set; }
         public SmtpConfiguration SmtpConfiguration { get; set; }
+        public TokenConfiguration TokenConfiguration { get; set; }
     }
 
     public class Logging
