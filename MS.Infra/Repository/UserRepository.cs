@@ -56,9 +56,9 @@ namespace MSEmail.Infra.Repository
             return _context.Users.Find(id);
         }
 
-        public User? GetByLogin(string email, string password)
+        public User? GetByLogin(string email)
         {
-            return _context.Users.FirstOrDefault(x => x.Email == email && password == x.Password);
+            return _context.Users.FirstOrDefault(x => x.Email == email);
         }
 
         #region Dispose

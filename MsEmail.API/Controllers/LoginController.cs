@@ -4,6 +4,7 @@ using MsEmail.API.DTO;
 using MsEmail.API.Service;
 using MsEmail.Domain.Entities;
 using MsEmail.Infra.Context;
+using MSEmail.Common;
 using MSEmail.Infra.Repository;
 
 namespace MsEmail.API.Controllers
@@ -51,10 +52,13 @@ namespace MsEmail.API.Controllers
         {
             try
             {
-                User user = _users.GetByLogin(login.Email, login.Password);
+                User user = _users.GetByLogin(login.Email);
 
                 if (user == null)
-                    return BadRequest(new { message = "Usuario ou senha invalidos" });
+                    return BadRequest(new { Message = APIMsg.ERR0002 });
+
+                if (user.Password != login.Password)
+                    return BadRequest(new { Message = APIMsg.ERR0003 });
 
                 var token = new TokenServices(_token).GenerateToken(user);
 
