@@ -8,12 +8,10 @@ namespace MsEmail.API.Service
 {
     public class EmailService
     {
-        private readonly AppDbContext _context;
         private readonly IOptions<SmtpConfiguration> _options;
         private readonly SmtpClient _smtpClient;
 
-        public EmailService(AppDbContext context, IOptions<SmtpConfiguration> options) {
-            _context = context;
+        public EmailService(IOptions<SmtpConfiguration> options) {
             _options = options;
             _smtpClient = new SmtpClient
             {
@@ -42,11 +40,6 @@ namespace MsEmail.API.Service
             catch (Exception)
             {
                 email.Status = Entities.Enums.EmailStatus.Error;
-            }
-            finally
-            {
-                _context.Emails.Update(email);
-                _context.SaveChanges();
             }
         }
     }
