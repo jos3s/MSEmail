@@ -9,6 +9,7 @@ using MsEmail.API.Entities.Enums;
 using MsEmail.API.Filters;
 using MsEmail.API.Service;
 using MSEmail.Common;
+using System.Security.Claims;
 
 namespace MsEmail.API.Controllers
 {
@@ -29,14 +30,35 @@ namespace MsEmail.API.Controllers
         [HttpGet]
         [RequisitionFilter]
         [Authorize(Roles = "admin")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<Email>))]
         public IActionResult GetAll()
         {
-            return Ok(_context.Emails.Where(x => x.DeletionDate == null));
+            var identity = (ClaimsIdentity)User.Identity;
+            IEnumerable<Claim> claims = identity.Claims;
+
+            if(this.User.GetRole().Equals("admin"))
+                return Ok(_context.Emails.Where(x => x.DeletionDate == null));
+
+            var UserId = this.User.GetUserID();
+            var emails = _context.Emails.Where(x => x.CreationUserId == UserId);
+            return Ok(emails);
+        }
+        
+        [HttpGet("my")]
+        [RequisitionFilter]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<Email>))]
+        public IActionResult GetAllByUser()
+        {
+            var UserId = this.User.GetUserID();
+            var emails = _context.Emails.Where(x => x.CreationUserId == UserId);
+            return Ok(emails);
         }
 
         [HttpGet("{id}")]
         [RequisitionFilter]
         [Authorize(Roles = "admin,user")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Email))]
         public IActionResult GetById(long id)
         {
 
@@ -61,6 +83,7 @@ namespace MsEmail.API.Controllers
                     Status = EmailStatus.Created,
                 };
                 email.CreationDate = email.UpdateDate = DateTime.Now;
+                email.CreationUserId = email.UpdateUserId = this.User.GetUserID();
 
                 _context.Emails.Add(email);
                 _context.SaveChanges();
