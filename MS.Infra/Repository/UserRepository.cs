@@ -1,5 +1,5 @@
-﻿using MsEmail.Domain.Context;
-using MsEmail.Domain.Entities;
+﻿using MsEmail.Domain.Entities;
+using MsEmail.Infra.Context;
 using MSEmail.Infra.Repository.Interface;
 using System.Linq.Expressions;
 

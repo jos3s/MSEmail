@@ -2,7 +2,7 @@
 using MsEmail.Domain.Entities;
 using MsEmail.Domain.Entities.Common;
 
-namespace MsEmail.Domain.Context
+namespace MsEmail.Infra.Context
 {
     public class AppDbContext : DbContext
     {
