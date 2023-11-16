@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 using MS.Domain.Enums;
 using MsEmail.API.DTO;
 using MsEmail.API.Filters;
@@ -20,13 +19,11 @@ namespace MsEmail.API.Controllers
     {
         private readonly EmailRepository _emails;
         private readonly ExceptionLogRepository _exceptions;
-        private readonly IOptions<SmtpConfiguration> _smtp;
 
-        public EmailController(AppDbContext context, IOptions<SmtpConfiguration> smtp)
+        public EmailController(AppDbContext context)
         {
             _emails = new EmailRepository(context);
             _exceptions = new ExceptionLogRepository(context);
-            _smtp = smtp;
         }
 
         [HttpGet]
@@ -59,7 +56,7 @@ namespace MsEmail.API.Controllers
         public IActionResult GetAllByUser()
         {
             var userId = this.User.GetUserID();
-            var emails = _emails.GetEmailsByCreationUserId(userId);
+            var emails = _emails.GetEmailsByCreationUserId((long)userId);
             return Ok(new { Count = emails.Count(), emails });
         }
 
@@ -90,11 +87,11 @@ namespace MsEmail.API.Controllers
                     Body = emailDTO.Body,
                     Status = EmailStatus.Created,
                 };
-                email.CreationUserId = email.UpdateUserId = this.User.GetUserID();
+                email.CreationUserId = email.UpdateUserId = (long)this.User.GetUserID();
 
                 _emails.Insert(email).Save();
 
-                new EmailService(_smtp).SendEmail(email);
+                new EmailService().SendEmail(email);
                 _emails.Update(email).Save();
 
                 return CreatedAtAction(nameof(GetById), new { email.Id }, email);

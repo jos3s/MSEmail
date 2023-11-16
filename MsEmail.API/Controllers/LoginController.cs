@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 using MsEmail.API.DTO;
-using MsEmail.API.Service;
+using MsEmail.API.Filters;
 using MsEmail.Domain.Entities;
 using MsEmail.Infra.Context;
 using MSEmail.Common;
 using MSEmail.Infra.Repository;
+using MSEmail.Infra.Services;
 
 namespace MsEmail.API.Controllers
 {
@@ -14,15 +14,14 @@ namespace MsEmail.API.Controllers
     public class LoginController : ControllerBase
     {
         private readonly UserRepository _users;
-        private readonly IOptions<TokenConfiguration> _token;
 
-        public LoginController(AppDbContext context, IOptions<TokenConfiguration> token)
+        public LoginController(AppDbContext context)
         {
             _users = new UserRepository(context);
-            _token = token;
         }
 
         [HttpPost("create")]
+        [RequisitionFilter]
         public IActionResult CreateLogin(UserDTO userDTO)
         {
             try
@@ -48,6 +47,7 @@ namespace MsEmail.API.Controllers
         }
         
         [HttpPost]
+        [RequisitionFilter]
         public IActionResult Authenticate(UserDTO login)
         {
             try
@@ -60,7 +60,7 @@ namespace MsEmail.API.Controllers
                 if (user.Password != login.Password)
                     return BadRequest(new { Message = APIMsg.ERR0003 });
 
-                var token = new TokenServices(_token).GenerateToken(user);
+                var token = TokenServices.GenerateToken(user);
 
                 return Ok(token);
             } 
