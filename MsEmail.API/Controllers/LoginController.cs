@@ -3,7 +3,7 @@ using Microsoft.Extensions.Options;
 using MsEmail.API.Context;
 using MsEmail.API.DTO;
 using MsEmail.API.Entities;
-using MsEmail.API.Entities.Enums;
+using MsEmail.API.Repository;
 using MsEmail.API.Service;
 
 namespace MsEmail.API.Controllers
@@ -12,12 +12,12 @@ namespace MsEmail.API.Controllers
     [ApiController]
     public class LoginController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly UserRepository _userRepository;
         private readonly IOptions<TokenConfiguration> _token;
 
         public LoginController(AppDbContext context, IOptions<TokenConfiguration> token)
         {
-            _context = context;
+            _userRepository = new UserRepository(context);
             _token = token;
         }
 
@@ -35,10 +35,8 @@ namespace MsEmail.API.Controllers
                     Password = userDTO.Password,
                 };
                 user.Role = "user";
-                user.CreationDate = user.UpdateDate = DateTime.Now;
 
-                _context.Users.Add(user);
-                _context.SaveChanges();
+                _userRepository.Insert(user).Save();
 
                 user.Password = "";
                 return Ok(user);
@@ -52,9 +50,9 @@ namespace MsEmail.API.Controllers
         [HttpPost]
         public IActionResult Authenticate(UserDTO login)
         {
-            User  user = _context.Users.FirstOrDefault(x => x.Email == login.Email && login.Password == x.Password);
+            User user = _userRepository.GetByLogin(login.Email, login.Password);
 
-            if(user == null)
+            if (user == null)
                 return BadRequest(new {message = "Usuario ou senha invalidos"});
 
 
