@@ -8,7 +8,7 @@ using MsEmail.Infra.Context;
 
 #nullable disable
 
-namespace MsEmail.API.Migrations
+namespace MSEmail.Infra.Migrations
 {
     [DbContext(typeof(AppDbContext))]
     partial class AppDbContextModelSnapshot : ModelSnapshot

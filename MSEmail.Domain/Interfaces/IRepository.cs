@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 
-namespace MSEmail.Infra.Repository.Interface
+namespace MSEmail.Domain.Interface
 {
     public interface IRepository<T> : IDisposable
     {

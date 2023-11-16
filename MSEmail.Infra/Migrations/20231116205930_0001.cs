@@ -3,10 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace MsEmail.API.Migrations
+namespace MSEmail.Infra.Migrations
 {
     /// <inheritdoc />
-    public partial class _0008 : Migration
+    public partial class _0001 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

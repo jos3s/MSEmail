@@ -12,9 +12,17 @@ public static class Extensions
         return obj == null;
     }
 
-    public static long GetUserID(this ClaimsPrincipal User)
+    public static long? GetUserID(this ClaimsPrincipal User)
     {
-        return long.Parse(User.Claims.First(i => i.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier").Value);
+        try
+        {
+            return long.Parse(User.Claims.First(i => i.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier").Value);
+        }
+        catch (Exception)
+        {
+
+            return null;
+        } 
     }
 
     public static string GetRole(this ClaimsPrincipal User)

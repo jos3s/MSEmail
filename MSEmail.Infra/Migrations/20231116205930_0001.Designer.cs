@@ -9,11 +9,11 @@ using MsEmail.Infra.Context;
 
 #nullable disable
 
-namespace MsEmail.API.Migrations
+namespace MSEmail.Infra.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20231116191207_0008")]
-    partial class _0008
+    [Migration("20231116205930_0001")]
+    partial class _0001
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

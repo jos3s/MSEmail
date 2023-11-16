@@ -1,26 +1,19 @@
-﻿using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.IdentityModel.Tokens;
 using MsEmail.Domain.Entities;
+using MSEmail.Common.Utils;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace MsEmail.API.Service
+namespace MSEmail.Infra.Services
 {
-    public class TokenServices
+    public static class TokenServices 
     {
-        private readonly IOptions<TokenConfiguration> _options;
-        public TokenServices(IOptions<TokenConfiguration> options)
-        {
-            _options = options;
-        }
-
-
-        public string GenerateToken(User user)
+        public static string GenerateToken(User user) 
         {
             var handler = new JwtSecurityTokenHandler();
 
-            var key = Encoding.UTF8.GetBytes(_options.Value.Secrety);
+            var key = Encoding.UTF8.GetBytes(ConfigHelper.GetTokenSecret());
 
             var credentials = new SigningCredentials(
                 new SymmetricSecurityKey(key),

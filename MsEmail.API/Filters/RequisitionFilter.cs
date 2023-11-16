@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.Filters;
 using MsEmail.Domain.Entities.Common;
 using MsEmail.Infra.Context;
+using MSEmail.Common.Utils;
 
 namespace MsEmail.API.Filters
 {
@@ -25,7 +26,7 @@ namespace MsEmail.API.Filters
                 ActionName = routeData.Values["action"].ToString(),
             };
             log.CreationDate = log.UpdateDate = DateTime.Now;
-            log.CreationUserId = log.UpdateUserId = _actionExecutingContext.HttpContext.User?.GetUserID() ?? 0L;
+            log.CreationUserId = log.UpdateUserId = _actionExecutingContext.HttpContext?.User?.GetUserID() ?? ConfigHelper.DefaultUserId();
             _context.SystemLogs.Add(log);
             _context.SaveChanges();
         }

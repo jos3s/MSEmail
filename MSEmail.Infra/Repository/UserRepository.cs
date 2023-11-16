@@ -1,15 +1,15 @@
-﻿using MsEmail.Domain.Entities.Common;
+﻿using MsEmail.Domain.Entities;
 using MsEmail.Infra.Context;
-using MSEmail.Infra.Repository.Interface;
+using MSEmail.Domain.Interface;
 using System.Linq.Expressions;
 
 namespace MSEmail.Infra.Repository
 {
-    public class SystemLogRepository : IRepository<SystemLog>, IDisposable
+    public class UserRepository : IRepository<User>, IDisposable
     {
-        public AppDbContext _context { get; set; }
+        private readonly AppDbContext _context;
 
-        public SystemLogRepository(AppDbContext context)
+        public UserRepository(AppDbContext context)
         {
             _context = context;
         }
@@ -19,41 +19,50 @@ namespace MSEmail.Infra.Repository
             _context.SaveChanges();
         }
 
-        public IRepository<SystemLog> Insert(SystemLog entity)
+        public IRepository<User> Insert(User entity)
         {
             entity.CreationDate = entity.UpdateDate = DateTime.Now;
-            _context.SystemLogs.Add(entity);
+            _context.Users.Add(entity);
             return this;
         }
 
-        public IRepository<SystemLog> Update(SystemLog entity)
+        public IRepository<User> Update(User entity)
         {
             entity.UpdateDate = DateTime.Now;
-            _context.SystemLogs.Update(entity);
+            _context.Users.Update(entity);
             return this;
         }
 
-        public IRepository<SystemLog> Delete(long id)
+        public IRepository<User> Delete(long id)
+        {
+            User user = _context.Users.Find(id);
+            user.DeletionDate = DateTime.Now;
+            _context.Users.Update(user);
+            return this;
+        }
+
+        public IRepository<User> InsertRange(List<User> entity)
         {
             throw new NotImplementedException();
         }
 
-        public IRepository<SystemLog> InsertRange(List<SystemLog> entitys)
+        public IEnumerable<User> GetAll()
         {
-            throw new NotImplementedException();
+            return _context.Users.ToList();
         }
 
-        public IEnumerable<SystemLog> GetAll()
+        public User? GetById(long id)
         {
-            return _context.SystemLogs.ToList();
+            return _context.Users.Find(id);
         }
 
-        public SystemLog? GetById(long id)
+        public User? GetByLogin(string email)
         {
-            return _context.SystemLogs.FirstOrDefault(x => x.Id == id);
+            return _context.Users.FirstOrDefault(x => x.Email == email);
         }
 
         #region Dispose
+
         private bool disposed = false;
 
         protected virtual void Dispose(bool disposing)
@@ -74,11 +83,11 @@ namespace MSEmail.Infra.Repository
             GC.SuppressFinalize(this);
         }
 
-        public IEnumerable<SystemLog> Find(Expression<Func<SystemLog, bool>> expression)
+        public IEnumerable<User> Find(Expression<Func<User, bool>> expression)
         {
             throw new NotImplementedException();
         }
-
         #endregion
+
     }
 }

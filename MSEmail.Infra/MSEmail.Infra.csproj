@@ -19,4 +19,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\MSEmail.Common\MSEmail.Common.csproj" />
+    <ProjectReference Include="..\MSEmail.Domain\MSEmail.Domain.csproj" />
+  </ItemGroup>
 </Project>
