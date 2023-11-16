@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Options;
 using MS.Domain.Enums;
 using MsEmail.Domain.Entities;
+using MSEmail.Common.Utils;
 using System.Net;
 using System.Net.Mail;
 
@@ -8,21 +9,18 @@ namespace MsEmail.API.Service
 {
     public class EmailService
     {
-        private readonly IOptions<SmtpConfiguration> _options;
         private readonly SmtpClient _smtpClient;
 
-        public EmailService(IOptions<SmtpConfiguration> options) {
-            _options = options;
+        public EmailService() {
             _smtpClient = new SmtpClient
             {
-                Host = _options.Value.Host,
-                Port = _options.Value.Port,
+                Host = ConfigHelper.GetSmtpHost(),
+                Port = ConfigHelper.GetSmtpPort(),
                 EnableSsl = true,
                 DeliveryMethod = SmtpDeliveryMethod.Network,
                 UseDefaultCredentials = false,
-                Credentials = new NetworkCredential(_options.Value.UserName, _options.Value.Password)
+                Credentials = new NetworkCredential(ConfigHelper.GetSmtpUserName(), ConfigHelper.GetSmtpPassword())
             };
-
         }
 
         public void SendEmail(Email email)
