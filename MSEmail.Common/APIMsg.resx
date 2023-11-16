@@ -118,9 +118,15 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ERR0001" xml:space="preserve">
-    <value>"Não foi possível criar o email, tente novamente mais tarde."</value>
+    <value>Não foi possível criar o email, tente novamente mais tarde.</value>
+  </data>
+  <data name="ERR0002" xml:space="preserve">
+    <value>Login informado não existe, verifique</value>
+  </data>
+  <data name="ERR0003" xml:space="preserve">
+    <value>Senha incorreta, verifique</value>
   </data>
   <data name="REQ0001" xml:space="preserve">
-    <value>"É preciso informar esse campo"</value>
+    <value>É preciso informar esse campo</value>
   </data>
 </root>
