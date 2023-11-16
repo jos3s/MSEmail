@@ -3,10 +3,11 @@ using MsEmail.API.Context;
 using MsEmail.API.Entities;
 using MsEmail.API.Repository.Interface;
 using NuGet.Protocol.Plugins;
+using System.Linq.Expressions;
 
 namespace MsEmail.API.Repository
 {
-    public class UserRepository : IGenericRepository<User>, IDisposable
+    public class UserRepository : IRepository<User>, IDisposable
     {
         private readonly AppDbContext _context;
 
@@ -15,49 +16,55 @@ namespace MsEmail.API.Repository
             _context = context;
         }
 
-        public IEnumerable<User> GetAll()
+
+        public void Save()
         {
-            return _context.Users.ToList();
+            _context.SaveChanges();
         }
 
-        public User? GetById(int id)
-        {
-            return _context.Users.Find(id);
-        }
-
-        public IGenericRepository<User> Insert(User entity)
+        public IRepository<User> Insert(User entity)
         {
             entity.CreationDate = entity.UpdateDate = DateTime.Now;
             _context.Users.Add(entity);
             return this;
         }
 
-        public IGenericRepository<User> Update(User entity)
+        public IRepository<User> Update(User entity)
         {
             entity.UpdateDate = DateTime.Now;
             _context.Users.Update(entity);
             return this;
         }
 
+        public IRepository<User> Delete(long id)
+        {
+            User user = _context.Users.Find(id);
+            user.DeletionDate = DateTime.Now;
+            _context.Users.Update(user);
+            return this;
+        }
+
+        public IRepository<User> InsertRange(List<User> entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<User> GetAll()
+        {
+            return _context.Users.ToList();
+        }
+
+        public User? GetById(long id)
+        {
+            return _context.Users.Find(id);
+        }
 
         public User? GetByLogin(string email, string password)
         {
             return _context.Users.FirstOrDefault(x => x.Email == email && password == x.Password);
         }
 
-        public IGenericRepository<User> Delete(int id)
-        {
-            User user = _context.Users.Find(id);
-            user.DeletionDate = DateTime.Now;
-            _context.Users.Remove(user);
-            return this;
-        }
-
-
-        public void Save()
-        {
-            _context.SaveChanges();
-        }
+        #region Dispose
 
         private bool disposed = false;
 
@@ -78,6 +85,12 @@ namespace MsEmail.API.Repository
             Dispose(true);
             GC.SuppressFinalize(this);
         }
+
+        public IEnumerable<User> Find(Expression<Func<User, bool>> expression)
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
 
     }
 }
