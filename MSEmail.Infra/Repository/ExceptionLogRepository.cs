@@ -1,6 +1,6 @@
 ﻿using MsEmail.Domain.Entities.Common;
 using MsEmail.Infra.Context;
-using MSEmail.Infra.Repository.Interface;
+using MSEmail.Domain.Interface;
 using System.Linq.Expressions;
 
 namespace MSEmail.Infra.Repository

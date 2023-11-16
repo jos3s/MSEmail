@@ -15,8 +15,7 @@ namespace MsEmail.API
 
 
             var connectionString = builder.Configuration.GetConnectionString("MsEmail");
-            //builder.Services.AddDbContext<EmailContext>(db => db.UseInMemoryDatabase("Emails"));
-            builder.Services.AddDbContext<AppDbContext>(db => db.UseSqlServer(connectionString, b => b.MigrationsAssembly("MsEmail.API")));
+            builder.Services.AddDbContext<AppDbContext>(db => db.UseSqlServer(connectionString, b => b.MigrationsAssembly("MSEmail.Infra")));
 
             builder.Services.Configure<SmtpConfiguration>(builder.Configuration.GetSection("SmtpConfiguration"));
             builder.Services.Configure<TokenConfiguration>(builder.Configuration.GetSection("Token"));
