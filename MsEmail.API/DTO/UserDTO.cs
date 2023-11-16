@@ -1,5 +1,4 @@
-﻿using MsEmail.API.Entities.Enums;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace MsEmail.API.DTO
 {

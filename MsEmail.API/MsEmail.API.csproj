@@ -25,6 +25,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\MS.Domain\MSEmail.Domain.csproj" />
+	  <ProjectReference Include="..\MS.Infra\MSEmail.Infra.csproj" />
 	  <ProjectReference Include="..\MSEmail.Common\MSEmail.Common.csproj" />
 	</ItemGroup>
 

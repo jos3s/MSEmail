@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
-using MsEmail.API.Context;
-using MsEmail.API.Entities;
+using MS.Domain.Enums;
+using MsEmail.Domain.Entities;
 using System.Net;
 using System.Net.Mail;
 
@@ -34,12 +34,12 @@ namespace MsEmail.API.Service
                 mail.To.Add(new MailAddress(email.EmailTo));
                 mail.Subject = email.Subject;
                 mail.Body = email.Body;
-                email.Status = Entities.Enums.EmailStatus.Sent;
+                email.Status = EmailStatus.Sent;
                 _smtpClient.Send(mail);
             }
             catch (Exception)
             {
-                email.Status = Entities.Enums.EmailStatus.Error;
+                email.Status = EmailStatus.Error;
             }
         }
     }
