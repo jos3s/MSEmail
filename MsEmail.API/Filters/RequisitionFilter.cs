@@ -1,13 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.Filters;
-using System.Net;
-using System.Web.Http.Controllers;
-using System.Web;
-using System.Diagnostics;
-using MsEmail.API.Context;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Caching.Memory;
-using Microsoft.EntityFrameworkCore;
-using MsEmail.API.Entities.Common;
+using MsEmail.Domain.Entities.Common;
+using MsEmail.Infra.Context;
 
 namespace MsEmail.API.Filters
 {

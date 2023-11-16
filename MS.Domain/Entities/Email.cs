@@ -1,8 +1,8 @@
-﻿using MsEmail.API.Entities.Common;
-using MsEmail.API.Entities.Enums;
+﻿using MS.Domain.Enums;
+using MsEmail.Domain.Entities.Common;
 using System.Text;
 
-namespace MsEmail.API.Entities
+namespace MsEmail.Domain.Entities
 {
     public class Email : BaseEntity
     {

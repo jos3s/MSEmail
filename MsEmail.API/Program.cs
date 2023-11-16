@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using MsEmail.API.Context;
+using MsEmail.Infra.Context;
 using System.Text;
 
 namespace MsEmail.API
@@ -16,7 +16,7 @@ namespace MsEmail.API
 
             var connectionString = builder.Configuration.GetConnectionString("MsEmail");
             //builder.Services.AddDbContext<EmailContext>(db => db.UseInMemoryDatabase("Emails"));
-            builder.Services.AddDbContext<AppDbContext>(db => db.UseSqlServer(connectionString));
+            builder.Services.AddDbContext<AppDbContext>(db => db.UseSqlServer(connectionString, b => b.MigrationsAssembly("MsEmail.API")));
 
             builder.Services.Configure<SmtpConfiguration>(builder.Configuration.GetSection("SmtpConfiguration"));
             builder.Services.Configure<TokenConfiguration>(builder.Configuration.GetSection("Token"));

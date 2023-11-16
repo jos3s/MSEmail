@@ -59,18 +59,36 @@ namespace MSEmail.Common {
                 resourceCulture = value;
             }
         }
-
+        
         /// <summary>
-        ///   Consulta uma cadeia de caracteres localizada semelhante a &quot;Não foi possível criar o email, tente novamente mais tarde.&quot;.
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Não foi possível criar o email, tente novamente mais tarde..
         /// </summary>
         public static string ERR0001 {
             get {
                 return ResourceManager.GetString("ERR0001", resourceCulture);
             }
         }
-
+        
         /// <summary>
-        ///   Consulta uma cadeia de caracteres localizada semelhante a &quot;É preciso informar esse campo&quot;.
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Login informado não existe, verifique.
+        /// </summary>
+        public static string ERR0002 {
+            get {
+                return ResourceManager.GetString("ERR0002", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Senha incorreta, verifique.
+        /// </summary>
+        public static string ERR0003 {
+            get {
+                return ResourceManager.GetString("ERR0003", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a É preciso informar esse campo.
         /// </summary>
         public static string REQ0001 {
             get {

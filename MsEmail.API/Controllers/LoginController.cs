@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using MsEmail.API.Context;
 using MsEmail.API.DTO;
-using MsEmail.API.Entities;
-using MsEmail.API.Repository;
 using MsEmail.API.Service;
+using MsEmail.Domain.Entities;
+using MsEmail.Infra.Context;
+using MSEmail.Common;
+using MSEmail.Infra.Repository;
 
 namespace MsEmail.API.Controllers
 {
@@ -49,15 +50,24 @@ namespace MsEmail.API.Controllers
         [HttpPost]
         public IActionResult Authenticate(UserDTO login)
         {
-            User user = _users.GetByLogin(login.Email, login.Password);
+            try
+            {
+                User user = _users.GetByLogin(login.Email);
 
-            if (user == null)
-                return BadRequest(new {message = "Usuario ou senha invalidos"});
+                if (user == null)
+                    return BadRequest(new { Message = APIMsg.ERR0002 });
 
+                if (user.Password != login.Password)
+                    return BadRequest(new { Message = APIMsg.ERR0003 });
 
-            var token = new TokenServices(_token).GenerateToken(user);
+                var token = new TokenServices(_token).GenerateToken(user);
 
-            return Ok(token);
+                return Ok(token);
+            } 
+            catch (Exception ex)
+            {
+                return Problem(ex.Message);
+            }
         }
     }
 }

@@ -1,11 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
-using MsEmail.API.Context;
-using MsEmail.API.Entities;
-using MsEmail.API.Repository.Interface;
-using NuGet.Protocol.Plugins;
+﻿using MsEmail.Domain.Entities;
+using MsEmail.Infra.Context;
+using MSEmail.Infra.Repository.Interface;
 using System.Linq.Expressions;
 
-namespace MsEmail.API.Repository
+namespace MSEmail.Infra.Repository
 {
     public class UserRepository : IRepository<User>, IDisposable
     {
@@ -15,7 +13,6 @@ namespace MsEmail.API.Repository
         {
             _context = context;
         }
-
 
         public void Save()
         {
@@ -59,9 +56,9 @@ namespace MsEmail.API.Repository
             return _context.Users.Find(id);
         }
 
-        public User? GetByLogin(string email, string password)
+        public User? GetByLogin(string email)
         {
-            return _context.Users.FirstOrDefault(x => x.Email == email && password == x.Password);
+            return _context.Users.FirstOrDefault(x => x.Email == email);
         }
 
         #region Dispose
@@ -70,14 +67,14 @@ namespace MsEmail.API.Repository
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!this.disposed)
+            if (!disposed)
             {
                 if (disposing)
                 {
                     _context.Dispose();
                 }
             }
-            this.disposed = true;
+            disposed = true;
         }
 
         public void Dispose()

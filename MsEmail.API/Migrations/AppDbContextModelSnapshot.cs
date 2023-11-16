@@ -3,20 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using MsEmail.API.Context;
+using MsEmail.Infra.Context;
 
 #nullable disable
 
-namespace MsEmail.API.Context.Migrations
+namespace MsEmail.API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20231115211828_0004")]
-    partial class _0004
+    partial class AppDbContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -25,7 +22,7 @@ namespace MsEmail.API.Context.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("MsEmail.API.Entities.Common.ExceptionLog", b =>
+            modelBuilder.Entity("MsEmail.Domain.Entities.Common.ExceptionLog", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -35,6 +32,9 @@ namespace MsEmail.API.Context.Migrations
 
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<long>("CreationUserId")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime?>("DeletionDate")
                         .HasColumnType("datetime2");
@@ -53,12 +53,15 @@ namespace MsEmail.API.Context.Migrations
                     b.Property<DateTime>("UpdateDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<long>("UpdateUserId")
+                        .HasColumnType("bigint");
+
                     b.HasKey("Id");
 
                     b.ToTable("ExceptionLogs");
                 });
 
-            modelBuilder.Entity("MsEmail.API.Entities.Common.SystemLog", b =>
+            modelBuilder.Entity("MsEmail.Domain.Entities.Common.SystemLog", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -77,18 +80,24 @@ namespace MsEmail.API.Context.Migrations
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<long>("CreationUserId")
+                        .HasColumnType("bigint");
+
                     b.Property<DateTime?>("DeletionDate")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("UpdateDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<long>("UpdateUserId")
+                        .HasColumnType("bigint");
+
                     b.HasKey("Id");
 
                     b.ToTable("SystemLogs");
                 });
 
-            modelBuilder.Entity("MsEmail.API.Entities.Email", b =>
+            modelBuilder.Entity("MsEmail.Domain.Entities.Email", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -101,6 +110,9 @@ namespace MsEmail.API.Context.Migrations
 
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<long>("CreationUserId")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime?>("DeletionDate")
                         .HasColumnType("datetime2");
@@ -122,12 +134,15 @@ namespace MsEmail.API.Context.Migrations
                     b.Property<DateTime>("UpdateDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<long>("UpdateUserId")
+                        .HasColumnType("bigint");
+
                     b.HasKey("Id");
 
                     b.ToTable("Emails");
                 });
 
-            modelBuilder.Entity("MsEmail.API.Entities.User", b =>
+            modelBuilder.Entity("MsEmail.Domain.Entities.User", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -137,6 +152,9 @@ namespace MsEmail.API.Context.Migrations
 
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<long>("CreationUserId")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime?>("DeletionDate")
                         .HasColumnType("datetime2");
@@ -149,11 +167,15 @@ namespace MsEmail.API.Context.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Role")
-                        .HasColumnType("int");
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("UpdateDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<long>("UpdateUserId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 

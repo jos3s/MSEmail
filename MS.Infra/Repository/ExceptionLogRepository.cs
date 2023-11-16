@@ -1,10 +1,9 @@
-﻿using MsEmail.API.Context;
-using MsEmail.API.Entities;
-using MsEmail.API.Entities.Common;
-using MsEmail.API.Repository.Interface;
+﻿using MsEmail.Domain.Entities.Common;
+using MsEmail.Infra.Context;
+using MSEmail.Infra.Repository.Interface;
 using System.Linq.Expressions;
 
-namespace MsEmail.API.Repository
+namespace MSEmail.Infra.Repository
 {
     public class ExceptionLogRepository : IRepository<ExceptionLog>, IDisposable
     {
@@ -34,7 +33,7 @@ namespace MsEmail.API.Repository
 
         public IRepository<ExceptionLog> Delete(long id)
         {
-           throw new NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public IRepository<ExceptionLog> InsertRange(List<ExceptionLog> entitys)
@@ -57,14 +56,14 @@ namespace MsEmail.API.Repository
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!this.disposed)
+            if (!disposed)
             {
                 if (disposing)
                 {
                     _context.Dispose();
                 }
             }
-            this.disposed = true;
+            disposed = true;
         }
 
         public void Dispose()

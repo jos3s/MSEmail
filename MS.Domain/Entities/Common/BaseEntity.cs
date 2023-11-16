@@ -1,4 +1,4 @@
-﻿namespace MsEmail.API.Entities.Common
+﻿namespace MsEmail.Domain.Entities.Common
 {
     public class BaseEntity
     {

@@ -1,9 +1,9 @@
-﻿using MsEmail.API.Context;
-using MsEmail.API.Entities;
-using MsEmail.API.Repository.Interface;
+﻿using MsEmail.Domain.Entities;
+using MsEmail.Infra.Context;
+using MSEmail.Infra.Repository.Interface;
 using System.Linq.Expressions;
 
-namespace MsEmail.API.Repository
+namespace MSEmail.Infra.Repository
 {
     public class EmailRepository : IRepository<Email>, IDisposable
     {
@@ -43,7 +43,8 @@ namespace MsEmail.API.Repository
 
         public IRepository<Email> InsertRange(List<Email> entitys)
         {
-            entitys.ForEach(x => {
+            entitys.ForEach(x =>
+            {
                 x.CreationDate = x.UpdateDate = DateTime.Now;
             });
             _context.Emails.AddRange(entitys);
@@ -76,14 +77,14 @@ namespace MsEmail.API.Repository
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!this.disposed)
+            if (!disposed)
             {
                 if (disposing)
                 {
                     _context.Dispose();
                 }
             }
-            this.disposed = true;
+            disposed = true;
         }
 
         public void Dispose()

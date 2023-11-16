@@ -1,16 +1,15 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using MsEmail.API.Context;
+using MS.Domain.Enums;
 using MsEmail.API.DTO;
-using MsEmail.API.Entities;
-using MsEmail.API.Entities.Common;
-using MsEmail.API.Entities.Enums;
 using MsEmail.API.Filters;
-using MsEmail.API.Repository;
 using MsEmail.API.Service;
+using MsEmail.Domain.Entities;
+using MsEmail.Domain.Entities.Common;
+using MsEmail.Infra.Context;
 using MSEmail.Common;
-using System.Security.Claims;
+using MSEmail.Infra.Repository;
 
 namespace MsEmail.API.Controllers
 {

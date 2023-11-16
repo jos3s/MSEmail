@@ -1,8 +1,6 @@
-﻿using MsEmail.API.Context;
-using MsEmail.API.Entities;
-using System.Linq.Expressions;
+﻿using System.Linq.Expressions;
 
-namespace MsEmail.API.Repository.Interface
+namespace MSEmail.Infra.Repository.Interface
 {
     public interface IRepository<T> : IDisposable
     {

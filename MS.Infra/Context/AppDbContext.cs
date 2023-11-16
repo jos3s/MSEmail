@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MsEmail.API.Entities;
-using MsEmail.API.Entities.Common;
+using MsEmail.Domain.Entities;
+using MsEmail.Domain.Entities.Common;
 
-namespace MsEmail.API.Context
+namespace MsEmail.Infra.Context
 {
     public class AppDbContext : DbContext
     {

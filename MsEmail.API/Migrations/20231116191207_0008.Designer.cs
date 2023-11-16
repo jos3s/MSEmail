@@ -3,17 +3,20 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using MsEmail.API.Context;
+using MsEmail.Infra.Context;
 
 #nullable disable
 
-namespace MsEmail.API.Context.Migrations
+namespace MsEmail.API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class EmailContextModelSnapshot : ModelSnapshot
+    [Migration("20231116191207_0008")]
+    partial class _0008
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -22,7 +25,7 @@ namespace MsEmail.API.Context.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("MsEmail.API.Entities.Common.ExceptionLog", b =>
+            modelBuilder.Entity("MsEmail.Domain.Entities.Common.ExceptionLog", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -61,7 +64,7 @@ namespace MsEmail.API.Context.Migrations
                     b.ToTable("ExceptionLogs");
                 });
 
-            modelBuilder.Entity("MsEmail.API.Entities.Common.SystemLog", b =>
+            modelBuilder.Entity("MsEmail.Domain.Entities.Common.SystemLog", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -97,7 +100,7 @@ namespace MsEmail.API.Context.Migrations
                     b.ToTable("SystemLogs");
                 });
 
-            modelBuilder.Entity("MsEmail.API.Entities.Email", b =>
+            modelBuilder.Entity("MsEmail.Domain.Entities.Email", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -142,7 +145,7 @@ namespace MsEmail.API.Context.Migrations
                     b.ToTable("Emails");
                 });
 
-            modelBuilder.Entity("MsEmail.API.Entities.User", b =>
+            modelBuilder.Entity("MsEmail.Domain.Entities.User", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
