@@ -44,6 +44,7 @@ namespace MsEmail.API.Service
 
             ci.AddClaim(new Claim(ClaimTypes.Name, user.Email));
             ci.AddClaim(new Claim(ClaimTypes.Role, user.Role));
+            ci.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()));
 
             return ci;
         }
