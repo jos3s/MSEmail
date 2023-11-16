@@ -9,5 +9,9 @@
         public DateTime UpdateDate { get; set; }
 
         public DateTime? DeletionDate { get; set; }
+
+        public long CreationUserId { get; set; }
+
+        public long UpdateUserId { get; set; }
     }
 }

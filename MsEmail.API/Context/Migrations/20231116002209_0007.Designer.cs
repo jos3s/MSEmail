@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MsEmail.API.Context;
 
@@ -11,9 +12,11 @@ using MsEmail.API.Context;
 namespace MsEmail.API.Context.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class EmailContextModelSnapshot : ModelSnapshot
+    [Migration("20231116002209_0007")]
+    partial class _0007
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
