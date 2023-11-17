@@ -20,7 +20,7 @@ namespace MsEmail.API
 
             builder.Services.AddControllers();
 
-            var key = Encoding.UTF8.GetBytes(builder.Configuration.GetSection("Token").GetValue<string>("Secret"));
+            var key = Encoding.UTF8.GetBytes(builder.Configuration.GetSection("AppSettings").GetValue<string>("TokenSecret"));
 
             builder.Services.AddAuthentication(x =>
             {
