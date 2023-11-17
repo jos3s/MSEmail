@@ -32,21 +32,33 @@ namespace MsEmail.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<Email>))]
         public IActionResult GetAll(bool withDeletionDate)
         {
-            var emails = _emails.GetAll();
-
-            if (!withDeletionDate.IsNull() && (bool)withDeletionDate)
+            try
             {
-                return Ok(new
+                var emails = _emails.GetAll();
+
+                if (!withDeletionDate.IsNull() && (bool)withDeletionDate)
                 {
-                    Count = emails.Count(),
-                    emails
-                });
+                    return Ok(new
+                    {
+                        Count = emails.Count(),
+                        emails
+                    });
+                }
+                var email = _emails.Find(x => x.DeletionDate == null);
+
+                return Ok(new { Count = emails.Count(), emails });
             }
-                
-
-            var email = _emails.Find(x => x.DeletionDate == null);
-
-            return Ok(new { Count = emails.Count(), emails });
+            catch (Exception ex)
+            {
+                _exceptions.Insert(new ExceptionLog
+                {
+                    Source = ex.Source,
+                    StackTrace = ex.StackTrace,
+                    Message = ex.Message.ToString(),
+                    MethodName = nameof(GetAll)
+                }).Save();
+                throw;
+            }
         }
 
         [HttpGet("my")]
@@ -55,9 +67,23 @@ namespace MsEmail.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<Email>))]
         public IActionResult GetAllByUser()
         {
-            var userId = this.User.GetUserID();
-            var emails = _emails.GetEmailsByCreationUserId((long)userId);
-            return Ok(new { Count = emails.Count(), emails });
+            try
+            {
+                var userId = this.User.GetUserID();
+                var emails = _emails.GetEmailsByCreationUserId((long)userId);
+                return Ok(new { Count = emails.Count(), emails });
+            }
+            catch (Exception ex)
+            {
+                _exceptions.Insert(new ExceptionLog
+                {
+                    Source = ex.Source,
+                    StackTrace = ex.StackTrace,
+                    Message = ex.Message.ToString(),
+                    MethodName = nameof(GetAllByUser)
+                }).Save();
+                return Problem(APIMsg.ERR0004);
+            }
         }
 
         [HttpGet("{id}")]
@@ -66,10 +92,24 @@ namespace MsEmail.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Email))]
         public IActionResult GetById(long id)
         {
+            try
+            {
+                var email = _emails.GetById(id);
+                if (email == null) return NotFound();
+                return Ok(email);
+            }
+            catch (Exception ex)
+            {
 
-            var email = _emails.GetById(id);
-            if (email == null) return NotFound();
-            return Ok(email);
+                _exceptions.Insert(new ExceptionLog
+                {
+                    Source = ex.Source,
+                    StackTrace = ex.StackTrace,
+                    Message = ex.Message.ToString(),
+                    MethodName = nameof(GetById)
+                }).Save();
+                return Problem(APIMsg.ERR0004);
+            }
         }
 
         [HttpPost("send")]
@@ -102,7 +142,8 @@ namespace MsEmail.API.Controllers
                 {
                     Source = ex.Source,
                     StackTrace = ex.StackTrace,
-                    Message = ex.Message.ToString()
+                    Message = ex.Message.ToString(),
+                    MethodName = nameof(Post)
                 }).Save();
                 return Problem(APIMsg.ERR0001);
             }
@@ -113,12 +154,26 @@ namespace MsEmail.API.Controllers
         [Authorize]
         public IActionResult Delete(long id)
         {
-            Email email = _emails.GetById(id);
-            if (email == null) return NotFound();
+            try
+            {
+                Email email = _emails.GetById(id);
+                if (email == null) return NotFound();
 
-            email.DeletionDate = DateTime.Now;
-            _emails.Update(email).Save();
-            return NoContent();
+                email.DeletionDate = DateTime.Now;
+                _emails.Update(email).Save();
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                _exceptions.Insert(new ExceptionLog
+                {
+                    Source = ex.Source,
+                    StackTrace = ex.StackTrace,
+                    Message = ex.Message.ToString(),
+                    MethodName = nameof(Delete)
+                }).Save();
+                return Problem(APIMsg.ERR0004);
+            }
         }
     }
 }

@@ -42,6 +42,7 @@ namespace MSEmail.Infra.Migrations
                     Source = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Message = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     StackTrace = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    MethodName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DeletionDate = table.Column<DateTime>(type: "datetime2", nullable: true),

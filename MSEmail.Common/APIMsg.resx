@@ -126,6 +126,9 @@
   <data name="ERR0003" xml:space="preserve">
     <value>Senha incorreta, verifique</value>
   </data>
+  <data name="ERR0004" xml:space="preserve">
+    <value>Ocorreu um erro, tente novamente mais tarde</value>
+  </data>
   <data name="REQ0001" xml:space="preserve">
     <value>É preciso informar esse campo</value>
   </data>

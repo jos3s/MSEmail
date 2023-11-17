@@ -88,6 +88,15 @@ namespace MSEmail.Common {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Ocorreu um erro, tente novamente mais tarde.
+        /// </summary>
+        public static string ERR0004 {
+            get {
+                return ResourceManager.GetString("ERR0004", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a É preciso informar esse campo.
         /// </summary>
         public static string REQ0001 {

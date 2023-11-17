@@ -2,10 +2,12 @@
 using MsEmail.API.DTO;
 using MsEmail.API.Filters;
 using MsEmail.Domain.Entities;
+using MsEmail.Domain.Entities.Common;
 using MsEmail.Infra.Context;
 using MSEmail.Common;
 using MSEmail.Infra.Repository;
 using MSEmail.Infra.Services;
+using System;
 
 namespace MsEmail.API.Controllers
 {
@@ -14,10 +16,12 @@ namespace MsEmail.API.Controllers
     public class LoginController : ControllerBase
     {
         private readonly UserRepository _users;
+        private readonly ExceptionLogRepository _exceptions;
 
         public LoginController(AppDbContext context)
         {
             _users = new UserRepository(context);
+            _exceptions = new ExceptionLogRepository(context);
         }
 
         [HttpPost("create")]
@@ -42,6 +46,12 @@ namespace MsEmail.API.Controllers
             }
             catch (Exception ex)
             {
+                _exceptions.Insert(new ExceptionLog
+                {
+                    Source = ex.Source,
+                    StackTrace = ex.StackTrace,
+                    Message = ex.Message.ToString()
+                }).Save();
                 return Problem(ex.Message);
             }
         }
@@ -66,6 +76,12 @@ namespace MsEmail.API.Controllers
             } 
             catch (Exception ex)
             {
+                _exceptions.Insert(new ExceptionLog
+                {
+                    Source = ex.Source,
+                    StackTrace = ex.StackTrace,
+                    Message = ex.Message.ToString()
+                }).Save();
                 return Problem(ex.Message);
             }
         }
