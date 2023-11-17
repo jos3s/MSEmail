@@ -12,7 +12,7 @@ using MsEmail.Infra.Context;
 namespace MSEmail.Infra.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20231116205930_0001")]
+    [Migration("20231117023603_0001")]
     partial class _0001
     {
         /// <inheritdoc />
@@ -43,6 +43,10 @@ namespace MSEmail.Infra.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MethodName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
