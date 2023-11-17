@@ -13,14 +13,8 @@ namespace MSEmail.Common.Utils
 
         public static string GetConfiguration(string key)
         {
-            if (ConfigurationSettings.GetSection("ConnectionStrings").GetSection(key) != null)
+            if (ConfigurationSettings.GetSection("ConnectionStrings").GetSection(key) == null)
                 return ConfigurationSettings.GetSection("ConnectionStrings").GetSection(key).Value;
-
-            if (ConfigurationSettings.GetSection("SmtpConfiguration").GetSection(key) == null)
-                return ConfigurationSettings.GetSection("SmtpConfiguration").GetSection(key).Value;
-            
-            if (ConfigurationSettings.GetSection("Token").GetSection(key) == null)
-                return ConfigurationSettings.GetSection("Token").GetSection(key).Value;
 
             return ConfigurationSettings.GetSection("AppSettings").GetSection(key).Value;
         }
@@ -43,7 +37,7 @@ namespace MSEmail.Common.Utils
         {
             try
             {
-                return GetConfiguration("Host");
+                return GetConfiguration("SmtpHost");
             }
             catch (Exception)
             {
@@ -56,7 +50,7 @@ namespace MSEmail.Common.Utils
             try
             {
                 int value = 0;
-                int.TryParse(GetConfiguration("Port"), out value);
+                int.TryParse(GetConfiguration("SmptPort"), out value);
                 return value;
             }
             catch (Exception)
@@ -69,7 +63,7 @@ namespace MSEmail.Common.Utils
         {
             try
             {
-                return GetConfiguration("UserName");
+                return GetConfiguration("SmtpUserName");
             }
             catch (Exception)
             {
@@ -81,7 +75,7 @@ namespace MSEmail.Common.Utils
         {
             try
             {
-                return GetConfiguration("Password");
+                return GetConfiguration("SmtpPassword");
             }
             catch (Exception)
             {
@@ -93,7 +87,7 @@ namespace MSEmail.Common.Utils
         {
             try
             {
-                return GetConfiguration("Secret");
+                return GetConfiguration("TokenSecret");
             }
             catch (Exception)
             {
