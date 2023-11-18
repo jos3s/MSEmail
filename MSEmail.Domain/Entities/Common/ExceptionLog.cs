@@ -1,4 +1,6 @@
-﻿namespace MsEmail.Domain.Entities.Common
+﻿using MSEmail.Domain.Enums;
+
+namespace MsEmail.Domain.Entities.Common
 {
     public class ExceptionLog : BaseEntity
     {
@@ -8,6 +10,10 @@
 
         public string? StackTrace { get; set; }
 
+        public string ClassName { get; set; }
+
         public string MethodName { get; set; }
+
+        public ServiceType ServiceType { get; set; }
     }
 }

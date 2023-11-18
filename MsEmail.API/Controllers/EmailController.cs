@@ -5,9 +5,10 @@ using MsEmail.API.DTO;
 using MsEmail.API.Filters;
 using MsEmail.API.Service;
 using MsEmail.Domain.Entities;
-using MsEmail.Domain.Entities.Common;
 using MsEmail.Infra.Context;
 using MSEmail.Common;
+using MSEmail.Domain.Enums;
+using MSEmail.Infra.Business;
 using MSEmail.Infra.Repository;
 
 namespace MsEmail.API.Controllers
@@ -18,12 +19,12 @@ namespace MsEmail.API.Controllers
     public class EmailController : ControllerBase
     {
         private readonly EmailRepository _emails;
-        private readonly ExceptionLogRepository _exceptions;
+        private readonly CommonLog _commonLog;
 
         public EmailController(AppDbContext context)
         {
             _emails = new EmailRepository(context);
-            _exceptions = new ExceptionLogRepository(context);
+            _commonLog = new CommonLog(context);
         }
 
         [HttpGet]
@@ -50,14 +51,8 @@ namespace MsEmail.API.Controllers
             }
             catch (Exception ex)
             {
-                _exceptions.Insert(new ExceptionLog
-                {
-                    Source = ex.Source,
-                    StackTrace = ex.StackTrace,
-                    Message = ex.Message.ToString(),
-                    MethodName = nameof(GetAll)
-                }).Save();
-                throw;
+                _commonLog.SaveExceptionLog(ex, nameof(GetAll), this.GetType().Name, ServiceType.API);
+                return Problem(APIMsg.ERR0004);
             }
         }
 
@@ -75,13 +70,7 @@ namespace MsEmail.API.Controllers
             }
             catch (Exception ex)
             {
-                _exceptions.Insert(new ExceptionLog
-                {
-                    Source = ex.Source,
-                    StackTrace = ex.StackTrace,
-                    Message = ex.Message.ToString(),
-                    MethodName = nameof(GetAllByUser)
-                }).Save();
+                _commonLog.SaveExceptionLog(ex, nameof(GetAllByUser), this.GetType().Name, ServiceType.API);
                 return Problem(APIMsg.ERR0004);
             }
         }
@@ -100,14 +89,7 @@ namespace MsEmail.API.Controllers
             }
             catch (Exception ex)
             {
-
-                _exceptions.Insert(new ExceptionLog
-                {
-                    Source = ex.Source,
-                    StackTrace = ex.StackTrace,
-                    Message = ex.Message.ToString(),
-                    MethodName = nameof(GetById)
-                }).Save();
+                _commonLog.SaveExceptionLog(ex, nameof(GetById), this.GetType().Name, ServiceType.API);
                 return Problem(APIMsg.ERR0004);
             }
         }
@@ -138,13 +120,7 @@ namespace MsEmail.API.Controllers
             }
             catch (Exception ex)
             {
-                _exceptions.Insert(new ExceptionLog
-                {
-                    Source = ex.Source,
-                    StackTrace = ex.StackTrace,
-                    Message = ex.Message.ToString(),
-                    MethodName = nameof(Post)
-                }).Save();
+                _commonLog.SaveExceptionLog(ex, nameof(Post), this.GetType().Name, ServiceType.API);
                 return Problem(APIMsg.ERR0001);
             }
         }
@@ -165,13 +141,7 @@ namespace MsEmail.API.Controllers
             }
             catch (Exception ex)
             {
-                _exceptions.Insert(new ExceptionLog
-                {
-                    Source = ex.Source,
-                    StackTrace = ex.StackTrace,
-                    Message = ex.Message.ToString(),
-                    MethodName = nameof(Delete)
-                }).Save();
+                _commonLog.SaveExceptionLog(ex, nameof(Delete), this.GetType().Name, ServiceType.API);
                 return Problem(APIMsg.ERR0004);
             }
         }
