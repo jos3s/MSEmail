@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MsEmail.API.DTO;
 using MsEmail.API.Filters;
 using MsEmail.Domain.Entities;
@@ -7,7 +8,6 @@ using MsEmail.Infra.Context;
 using MSEmail.Common;
 using MSEmail.Infra.Repository;
 using MSEmail.Infra.Services;
-using System;
 
 namespace MsEmail.API.Controllers
 {
@@ -58,6 +58,7 @@ namespace MsEmail.API.Controllers
         
         [HttpPost]
         [RequisitionFilter]
+        [AllowAnonymous]
         public IActionResult Authenticate(UserDTO login)
         {
             try

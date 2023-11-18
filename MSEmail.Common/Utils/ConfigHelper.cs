@@ -50,7 +50,7 @@ namespace MSEmail.Common.Utils
             try
             {
                 int value = 0;
-                int.TryParse(GetConfiguration("SmptPort"), out value);
+                int.TryParse(GetConfiguration("SmtpPort"), out value);
                 return value;
             }
             catch (Exception)
