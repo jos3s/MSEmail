@@ -94,13 +94,16 @@ namespace MsEmail.API.Controllers
             }
         }
 
+        [Authorize]
         [HttpPost("send")]
         [RequisitionFilter]
-        [Authorize]
-        public IActionResult Post(EmailDTO emailDTO)
+        public IActionResult Post([FromBody] EmailDTO emailDTO)
         {
             try
             {
+                if(!ModelState.IsValid)
+                    return BadRequest(ModelState);
+
                 Email email = new()
                 {
                     EmailFrom = emailDTO.EmailFrom,
@@ -108,6 +111,7 @@ namespace MsEmail.API.Controllers
                     Subject = emailDTO.Subject,
                     Body = emailDTO.Body,
                     Status = EmailStatus.Created,
+                    SendDate = (DateTime)emailDTO.SendDate,
                 };
                 email.CreationUserId = email.UpdateUserId = (long)this.User.GetUserID();
 
