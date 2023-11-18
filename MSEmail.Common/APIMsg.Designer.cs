@@ -97,11 +97,29 @@ namespace MSEmail.Common {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a O email não pode ser atualizado, pois já foi enviado.
+        /// </summary>
+        public static string ERR0005 {
+            get {
+                return ResourceManager.GetString("ERR0005", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a É preciso informar esse campo.
         /// </summary>
         public static string REQ0001 {
             get {
                 return ResourceManager.GetString("REQ0001", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a É preciso informar pelo menos um dos campo.
+        /// </summary>
+        public static string REQ0002 {
+            get {
+                return ResourceManager.GetString("REQ0002", resourceCulture);
             }
         }
     }
