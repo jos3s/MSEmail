@@ -16,6 +16,8 @@ namespace MsEmail.Domain.Entities
 
         public EmailStatus Status { get; set; }
 
+        public DateTime SendDate { get; set; }
+
         public override string ToString()
         {
             StringBuilder stringBuilder = new StringBuilder();
