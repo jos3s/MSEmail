@@ -129,7 +129,13 @@
   <data name="ERR0004" xml:space="preserve">
     <value>Ocorreu um erro, tente novamente mais tarde</value>
   </data>
+  <data name="ERR0005" xml:space="preserve">
+    <value>O email não pode ser atualizado, pois já foi enviado</value>
+  </data>
   <data name="REQ0001" xml:space="preserve">
     <value>É preciso informar esse campo</value>
+  </data>
+  <data name="REQ0002" xml:space="preserve">
+    <value>É preciso informar pelo menos um dos campo</value>
   </data>
 </root>

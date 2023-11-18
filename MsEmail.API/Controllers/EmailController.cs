@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MS.Domain.Enums;
-using MsEmail.API.DTO;
 using MsEmail.API.Filters;
+using MsEmail.API.Models;
+using MsEmail.API.Models.EmailModels;
 using MsEmail.API.Service;
 using MsEmail.Domain.Entities;
 using MsEmail.Infra.Context;
@@ -97,7 +98,7 @@ namespace MsEmail.API.Controllers
         [Authorize]
         [HttpPost("send")]
         [RequisitionFilter]
-        public IActionResult Post([FromBody] EmailDTO emailDTO)
+        public IActionResult Post([FromBody] CreateEmailModel emailDTO)
         {
             try
             {
@@ -129,6 +130,46 @@ namespace MsEmail.API.Controllers
             }
         }
 
+        [Authorize]
+        [HttpPatch("{id}")]
+        [RequisitionFilter]
+        public IActionResult Patch([FromRoute]long id, UpdateEmailModel updateEmail)
+        {
+            try
+            {
+                if(updateEmail.IsNull())
+                    return BadRequest(new APIResult { Message = APIMsg.REQ0002 });
+                
+                Email email = _emails.GetById(id);
+
+                if (email == null) return NotFound(id);
+
+                if (email.Status.Equals(EmailStatus.Sent))
+                    return StatusCode(409, new APIResult { Message = APIMsg.ERR0005 } );
+
+                if(!updateEmail.SendDate.IsNull())
+                    email.SendDate = (DateTime)updateEmail.SendDate;
+
+                if(!updateEmail.Subject.IsNull())
+                    email.Subject = updateEmail.Subject;
+
+                if(!updateEmail.Body.IsNull())
+                    email.Body = updateEmail.Body;
+
+                email.UpdateUserId = (long)this.User.GetUserID();
+                _emails.Update(email).Save();
+
+                return Ok(email);
+            }
+            catch (Exception ex)
+            {
+                _commonLog.SaveExceptionLog(ex, nameof(Patch), this.GetType().Name, ServiceType.API);
+                return Problem(APIMsg.ERR0004);
+            }
+        }
+
+
+
         [HttpDelete]
         [RequisitionFilter]
         [Authorize]
@@ -138,8 +179,9 @@ namespace MsEmail.API.Controllers
             {
                 Email email = _emails.GetById(id);
                 if (email == null) return NotFound();
-
+                
                 email.DeletionDate = DateTime.Now;
+                email.UpdateUserId = (long)this.User.GetUserID();
                 _emails.Update(email).Save();
                 return NoContent();
             }

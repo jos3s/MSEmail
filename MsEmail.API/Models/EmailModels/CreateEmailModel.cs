@@ -2,11 +2,11 @@
 using MSEmail.Common;
 using System.ComponentModel.DataAnnotations;
 
-namespace MsEmail.API.DTO
+namespace MsEmail.API.Models.EmailModels
 {
-    public class EmailDTO
+    public class CreateEmailModel
     {
-        [Required (ErrorMessageResourceName = "REQ0001", ErrorMessageResourceType = typeof(APIMsg))]
+        [Required(ErrorMessageResourceName = "REQ0001", ErrorMessageResourceType = typeof(APIMsg))]
         [EmailAddress]
         public string EmailFrom { get; set; }
 
