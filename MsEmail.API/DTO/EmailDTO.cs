@@ -18,6 +18,7 @@ namespace MsEmail.API.DTO
 
         public string? Body { get; set; }
 
-        public EmailStatus? Status { get; set; }
+        [Required(ErrorMessageResourceName = "REQ0001", ErrorMessageResourceType = typeof(APIMsg))]
+        public DateTime? SendDate { get; set; }
     }
 }
