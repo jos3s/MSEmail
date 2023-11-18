@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MsEmail.API.DTO;
 using MsEmail.API.Filters;
+using MsEmail.API.Models;
+using MsEmail.API.Models.UserModels;
 using MsEmail.Domain.Entities;
 using MsEmail.Infra.Context;
 using MSEmail.Common;
@@ -27,7 +28,7 @@ namespace MsEmail.API.Controllers
 
         [HttpPost("create")]
         [RequisitionFilter]
-        public IActionResult CreateLogin(UserDTO userDTO)
+        public IActionResult CreateLogin(CreateUserModel userDTO)
         {
             try
             {
@@ -55,17 +56,17 @@ namespace MsEmail.API.Controllers
         [HttpPost]
         [RequisitionFilter]
         [AllowAnonymous]
-        public IActionResult Authenticate(UserDTO login)
+        public IActionResult Authenticate(CreateUserModel login)
         {
             try
             {
                 User user = _users.GetByLogin(login.Email);
 
                 if (user == null)
-                    return BadRequest(new { Message = APIMsg.ERR0002 });
+                    return BadRequest(new APIResult{ Message = APIMsg.ERR0002 });
 
                 if (user.Password != login.Password)
-                    return BadRequest(new { Message = APIMsg.ERR0003 });
+                    return BadRequest(new APIResult{ Message = APIMsg.ERR0003 });
 
                 var token = TokenServices.GenerateToken(user);
 
