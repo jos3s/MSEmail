@@ -1,8 +1,7 @@
-﻿using MsEmail.Domain.Entities;
-using MSEmail.Common;
+﻿using MSEmail.Common;
 using System.ComponentModel.DataAnnotations;
 
-namespace MsEmail.API.Models.EmailModels
+namespace MsEmail.API.Models.EmailModel
 {
     public class CreateEmailModel
     {
@@ -21,7 +20,7 @@ namespace MsEmail.API.Models.EmailModels
         [Required(ErrorMessageResourceName = "REQ0001", ErrorMessageResourceType = typeof(APIMsg))]
         public DateTime? SendDate { get; set; }
 
-        public static implicit operator CreateEmailModel(Email email)
+        public static implicit operator CreateEmailModel(Domain.Entities.Email email)
         {
             return new CreateEmailModel
             {
@@ -33,9 +32,9 @@ namespace MsEmail.API.Models.EmailModels
             };
         }
 
-        public static implicit operator Email(CreateEmailModel createEmailModel)
+        public static implicit operator Domain.Entities.Email(CreateEmailModel createEmailModel)
         {
-            return new Email
+            return new Domain.Entities.Email
             {
                 EmailFrom = createEmailModel.EmailFrom,
                 EmailTo = createEmailModel.EmailTo,
