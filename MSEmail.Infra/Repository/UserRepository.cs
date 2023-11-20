@@ -46,9 +46,10 @@ namespace MSEmail.Infra.Repository
             throw new NotImplementedException();
         }
 
-        public IEnumerable<User> GetAll()
+        public List<User> GetAll(bool withDeletionDate = false)
         {
-            return _context.Users.ToList();
+            if(withDeletionDate) return _context.Users.ToList();
+            return _context.Users.Where(x=> x.DeletionDate.IsNull()).ToList();
         }
 
         public User? GetById(long id)
@@ -59,6 +60,11 @@ namespace MSEmail.Infra.Repository
         public User? GetByLogin(string email)
         {
             return _context.Users.FirstOrDefault(x => x.Email == email);
+        }
+
+        public List<User> Find(Expression<Func<User, bool>> expression)
+        {
+            throw new NotImplementedException();
         }
 
         #region Dispose
@@ -81,11 +87,6 @@ namespace MSEmail.Infra.Repository
         {
             Dispose(true);
             GC.SuppressFinalize(this);
-        }
-
-        public IEnumerable<User> Find(Expression<Func<User, bool>> expression)
-        {
-            throw new NotImplementedException();
         }
         #endregion
 

@@ -41,12 +41,17 @@ namespace MSEmail.Infra.Repository
             throw new NotImplementedException();
         }
 
-        public IEnumerable<ExceptionLog> GetAll()
+        public List<ExceptionLog> GetAll(bool withDeletionDate = false)
         {
             throw new NotImplementedException();
         }
 
         public ExceptionLog? GetById(long id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<ExceptionLog> Find(Expression<Func<ExceptionLog, bool>> expression)
         {
             throw new NotImplementedException();
         }
@@ -70,11 +75,6 @@ namespace MSEmail.Infra.Repository
         {
             Dispose(true);
             GC.SuppressFinalize(this);
-        }
-
-        public IEnumerable<ExceptionLog> Find(Expression<Func<ExceptionLog, bool>> expression)
-        {
-            throw new NotImplementedException();
         }
         #endregion
     }
