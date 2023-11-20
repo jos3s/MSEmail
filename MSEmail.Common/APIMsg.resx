@@ -132,6 +132,12 @@
   <data name="ERR0005" xml:space="preserve">
     <value>O email não pode ser atualizado, pois já foi enviado</value>
   </data>
+  <data name="ERR0006" xml:space="preserve">
+    <value>"Email ja utilizado."</value>
+  </data>
+  <data name="ERR0007" xml:space="preserve">
+    <value>"Não é possível apagar email já enviado."</value>
+  </data>
   <data name="REQ0001" xml:space="preserve">
     <value>É preciso informar esse campo</value>
   </data>

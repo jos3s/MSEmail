@@ -43,7 +43,7 @@ namespace MSEmail.Infra.Repository
             throw new NotImplementedException();
         }
 
-        public IEnumerable<SystemLog> GetAll()
+        public List<SystemLog> GetAll(bool withDeletionDate = false)
         {
             return _context.SystemLogs.ToList();
         }
@@ -53,6 +53,11 @@ namespace MSEmail.Infra.Repository
             return _context.SystemLogs.FirstOrDefault(x => x.Id == id);
         }
 
+        public List<SystemLog> Find(Expression<Func<SystemLog, bool>> expression)
+        {
+            throw new NotImplementedException();
+        }
+        
         #region Dispose
         private bool disposed = false;
 
@@ -73,12 +78,6 @@ namespace MSEmail.Infra.Repository
             Dispose(true);
             GC.SuppressFinalize(this);
         }
-
-        public IEnumerable<SystemLog> Find(Expression<Func<SystemLog, bool>> expression)
-        {
-            throw new NotImplementedException();
-        }
-
         #endregion
     }
 }

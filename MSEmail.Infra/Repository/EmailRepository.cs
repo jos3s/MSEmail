@@ -51,9 +51,10 @@ namespace MSEmail.Infra.Repository
             return this;
         }
 
-        public IEnumerable<Email> GetAll()
+        public List<Email> GetAll(bool withDeletionDate = false)
         {
-            return _context.Emails.ToList();
+            if(withDeletionDate) _context.Emails.ToList();
+            return _context.Emails.Where(x => x.DeletionDate == null).ToList();
         }
 
         public Email? GetById(long id)
@@ -61,14 +62,14 @@ namespace MSEmail.Infra.Repository
             return _context.Emails.FirstOrDefault(x => x.Id == id);
         }
 
-        public IEnumerable<Email> GetEmailsByCreationUserId(long userId)
+        public List<Email> GetEmailsByUserId(long userId)
         {
             return _context.Emails.Where(x => x.CreationUserId == userId).ToList();
         }
 
-        public IEnumerable<Email> Find(Expression<Func<Email, bool>> expression)
+        public List<Email> Find(Expression<Func<Email, bool>> expression)
         {
-            return _context.Emails.Where(expression);
+            return _context.Emails.Where(expression).ToList();
         }
 
 
