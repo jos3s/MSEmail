@@ -106,6 +106,24 @@ namespace MSEmail.Common {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a &quot;Email ja utilizado.&quot;.
+        /// </summary>
+        public static string ERR0006 {
+            get {
+                return ResourceManager.GetString("ERR0006", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a &quot;Não é possível apagar email já enviado.&quot;.
+        /// </summary>
+        public static string ERR0007 {
+            get {
+                return ResourceManager.GetString("ERR0007", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a É preciso informar esse campo.
         /// </summary>
         public static string REQ0001 {

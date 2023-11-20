@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 public static class Extensions
 {
-    public static bool IsNull(this object obj)
+    public static bool IsNull(this object? obj)
     {
         return obj == null;
     }
@@ -20,9 +20,8 @@ public static class Extensions
         }
         catch (Exception)
         {
-
             return null;
-        } 
+        }
     }
 
     public static string GetRole(this ClaimsPrincipal User)
