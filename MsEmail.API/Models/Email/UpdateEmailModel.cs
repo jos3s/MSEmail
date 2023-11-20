@@ -1,5 +1,4 @@
-﻿namespace MsEmail.API.Models.EmailModels
-{
+﻿namespace MsEmail.API.Models.EmailModel { 
     public class UpdateEmailModel
     {
         public string? Subject { get; set; }

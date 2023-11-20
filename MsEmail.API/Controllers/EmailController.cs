@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using MS.Domain.Enums;
 using MsEmail.API.Filters;
 using MsEmail.API.Models;
-using MsEmail.API.Models.EmailModels;
+using MsEmail.API.Models.EmailModel;
 using MsEmail.API.Service;
 using MsEmail.Domain.Entities;
 using MsEmail.Infra.Context;
@@ -78,7 +78,7 @@ namespace MsEmail.API.Controllers
 
         [HttpGet("{id}")]
         [RequisitionFilter]
-        [Authorize(Roles = "admin,user")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Email))]
         public IActionResult GetById(long id)
         {
@@ -121,7 +121,9 @@ namespace MsEmail.API.Controllers
                 new EmailService().SendEmail(email);
                 _emails.Update(email).Save();
 
-                return CreatedAtAction(nameof(GetById), new { email.Id }, email);
+                ViewEmailModel viewEmailModel = email;
+
+                return CreatedAtAction(nameof(GetById), new { email.Id }, viewEmailModel);
             }
             catch (Exception ex)
             {
@@ -133,6 +135,7 @@ namespace MsEmail.API.Controllers
         [Authorize]
         [HttpPatch("{id}")]
         [RequisitionFilter]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ViewEmailModel))]
         public IActionResult Patch([FromRoute]long id, UpdateEmailModel updateEmail)
         {
             try
@@ -159,7 +162,9 @@ namespace MsEmail.API.Controllers
                 email.UpdateUserId = (long)this.User.GetUserID();
                 _emails.Update(email).Save();
 
-                return Ok(email);
+                ViewEmailModel viewEmailModel = email;
+
+                return Ok(viewEmailModel);
             }
             catch (Exception ex)
             {

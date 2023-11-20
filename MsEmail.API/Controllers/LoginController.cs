@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MsEmail.API.Filters;
 using MsEmail.API.Models;
+using MsEmail.API.Models.Token;
 using MsEmail.API.Models.UserModels;
 using MsEmail.Domain.Entities;
 using MsEmail.Infra.Context;
@@ -28,23 +29,21 @@ namespace MsEmail.API.Controllers
 
         [HttpPost("create")]
         [RequisitionFilter]
-        public IActionResult CreateLogin(CreateUserModel userDTO)
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ViewUserModel))]
+        public IActionResult CreateLogin(CreateUserModel createUserModel)
         {
             try
             {
                 if (!ModelState.IsValid)
                     return BadRequest(ModelState);
 
-                User user = new User
-                {
-                    Email = userDTO.Email,
-                    Password = userDTO.Password,
-                };
+                User user = createUserModel;
 
                 _users.Insert(user).Save();
 
-                user.Password = "";
-                return Ok(user);
+                ViewUserModel viewUserModel = user;
+
+                return Ok(viewUserModel);
             }
             catch (Exception ex)
             {
@@ -56,7 +55,8 @@ namespace MsEmail.API.Controllers
         [HttpPost]
         [RequisitionFilter]
         [AllowAnonymous]
-        public IActionResult Authenticate(CreateUserModel login)
+        [ProducesResponseType(StatusCodes.Status200OK, Type= typeof(ViewTokenModel))]
+        public IActionResult Authenticate(LoginUserModel login)
         {
             try
             {
@@ -70,7 +70,7 @@ namespace MsEmail.API.Controllers
 
                 var token = TokenServices.GenerateToken(user);
 
-                return Ok(token);
+                return Ok(new ViewTokenModel { Email = user.Email, Token = token});
             } 
             catch (Exception ex)
             {
