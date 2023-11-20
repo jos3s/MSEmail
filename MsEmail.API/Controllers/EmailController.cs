@@ -30,48 +30,23 @@ namespace MsEmail.API.Controllers
 
         [HttpGet]
         [RequisitionFilter]
-        [Authorize(Roles = "admin")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<Email>))]
         public IActionResult GetAll(bool withDeletionDate)
         {
             try
             {
-                var emails = _emails.GetAll();
-
-                if (!withDeletionDate.IsNull() && (bool)withDeletionDate)
-                {
-                    return Ok(new
-                    {
-                        Count = emails.Count(),
-                        emails
-                    });
-                }
-                var email = _emails.Find(x => x.DeletionDate == null);
+                List<Email> emails = new();
+                if (this.User.GetRole().Equals("admin"))
+                    emails = _emails.GetAll(withDeletionDate);
+                else
+                    emails = _emails.GetEmailsByUserId((long)this.User.GetUserID());
 
                 return Ok(new { Count = emails.Count(), emails });
             }
             catch (Exception ex)
             {
                 _commonLog.SaveExceptionLog(ex, nameof(GetAll), this.GetType().Name, ServiceType.API);
-                return Problem(APIMsg.ERR0004);
-            }
-        }
-
-        [HttpGet("my")]
-        [RequisitionFilter]
-        [Authorize]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<Email>))]
-        public IActionResult GetAllByUser()
-        {
-            try
-            {
-                var userId = this.User.GetUserID();
-                var emails = _emails.GetEmailsByCreationUserId((long)userId);
-                return Ok(new { Count = emails.Count(), emails });
-            }
-            catch (Exception ex)
-            {
-                _commonLog.SaveExceptionLog(ex, nameof(GetAllByUser), this.GetType().Name, ServiceType.API);
                 return Problem(APIMsg.ERR0004);
             }
         }
@@ -98,22 +73,14 @@ namespace MsEmail.API.Controllers
         [Authorize]
         [HttpPost("send")]
         [RequisitionFilter]
-        public IActionResult Post([FromBody] CreateEmailModel emailDTO)
+        public IActionResult Post([FromBody] CreateEmailModel createEmailModel)
         {
             try
             {
                 if(!ModelState.IsValid)
                     return BadRequest(ModelState);
 
-                Email email = new()
-                {
-                    EmailFrom = emailDTO.EmailFrom,
-                    EmailTo = emailDTO.EmailTo,
-                    Subject = emailDTO.Subject,
-                    Body = emailDTO.Body,
-                    Status = EmailStatus.Created,
-                    SendDate = (DateTime)emailDTO.SendDate,
-                };
+                Email email = createEmailModel;
                 email.CreationUserId = email.UpdateUserId = (long)this.User.GetUserID();
 
                 _emails.Insert(email).Save();
@@ -185,6 +152,9 @@ namespace MsEmail.API.Controllers
                 Email email = _emails.GetById(id);
                 if (email == null) return NotFound();
                 
+                if(email.Status.Equals(EmailStatus.Sent))
+                    return BadRequest(new APIResult { Message = APIMsg.ERR0007});
+
                 email.DeletionDate = DateTime.Now;
                 email.UpdateUserId = (long)this.User.GetUserID();
                 _emails.Update(email).Save();
