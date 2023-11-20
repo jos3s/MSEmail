@@ -1,5 +1,4 @@
-﻿using MS.Domain.Enums;
-using MsEmail.Domain.Entities;
+﻿using MsEmail.Domain.Entities;
 using MSEmail.Common;
 using System.ComponentModel.DataAnnotations;
 
