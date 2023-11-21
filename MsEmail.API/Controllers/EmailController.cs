@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MS.Domain.Enums;
 using MsEmail.API.Filters;
 using MsEmail.API.Models;
 using MsEmail.API.Models.EmailModel;

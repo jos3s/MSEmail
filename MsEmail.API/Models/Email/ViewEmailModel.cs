@@ -1,4 +1,4 @@
-﻿using MS.Domain.Enums;
+﻿using MSEmail.Domain.Enums;
 
 namespace MsEmail.API.Models.EmailModel
 {
