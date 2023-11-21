@@ -38,7 +38,7 @@ namespace MsEmail.API.Controllers
                 if (this.User.GetRole().Equals("admin"))
                     emails = _emails.GetAll(withDeletionDate);
                 else
-                    emails = _emails.GetEmailsByUserId((long)this.User.GetUserID());
+                    emails = _emails.GetEmailsByUserId((long)this.User.GetUserID(), withDeletionDate);
 
                 return Ok(new { Count = emails.Count(), emails });
             }
