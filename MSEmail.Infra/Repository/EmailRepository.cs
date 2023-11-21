@@ -54,7 +54,7 @@ namespace MSEmail.Infra.Repository
 
         public List<Email> GetAll(bool withDeletionDate = false)
         {
-            if(withDeletionDate) _context.Emails.ToList();
+            if(withDeletionDate)  return _context.Emails.ToList();
             return _context.Emails.Where(x => x.DeletionDate == null).ToList();
         }
 
@@ -65,7 +65,7 @@ namespace MSEmail.Infra.Repository
 
         public List<Email> GetEmailsByUserId(long userId, bool withDeletionDate = false)
         {
-            if (withDeletionDate) _context.Emails.ToList();
+            if (withDeletionDate) return _context.Emails.Where(x => x.CreationUserId == userId).ToList();
             return _context.Emails.Where(x => x.DeletionDate == null && x.CreationUserId == userId).ToList();
         }
 
