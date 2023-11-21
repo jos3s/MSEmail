@@ -1,5 +1,5 @@
 ﻿using MsEmail.Domain.Entities;
-﻿using MsEmail.Infra.Context;
+using MsEmail.Infra.Context;
 using MsEmail.Sender.Service;
 using MSEmail.Domain.Enums;
 using MSEmail.Infra.Business;
@@ -25,6 +25,8 @@ public class ExecuteTRA
         try
         {
             List<Email> emails = _emailRepository.GetEmailsByStatus(EmailStatus.Created);
+
+            emails = emails.Where(x => x.SendDate < DateTime.Now).ToList();
 
             foreach (Email item in emails)
             {
