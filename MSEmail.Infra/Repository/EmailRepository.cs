@@ -63,9 +63,10 @@ namespace MSEmail.Infra.Repository
             return _context.Emails.FirstOrDefault(x => x.Id == id);
         }
 
-        public List<Email> GetEmailsByUserId(long userId)
+        public List<Email> GetEmailsByUserId(long userId, bool withDeletionDate = false)
         {
-            return _context.Emails.Where(x => x.CreationUserId == userId).ToList();
+            if (withDeletionDate) _context.Emails.ToList();
+            return _context.Emails.Where(x => x.DeletionDate == null && x.CreationUserId == userId).ToList();
         }
 
         public List<Email> Find(Expression<Func<Email, bool>> expression)
