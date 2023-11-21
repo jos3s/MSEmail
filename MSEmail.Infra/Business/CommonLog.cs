@@ -15,7 +15,7 @@ namespace MSEmail.Infra.Business
             _logs = new ExceptionLogRepository(context);
         }
 
-        public void SaveExceptionLog(Exception ex, string method, string className, ServiceType serviceType)
+        public void SaveExceptionLog(Exception ex, string method, string className, ServiceType serviceType, bool uniqueTransaction = true)
         {
             try
             {
@@ -28,7 +28,10 @@ namespace MSEmail.Infra.Business
                     ClassName = className,
                     ServiceType = serviceType
                 };
-                _logs.Insert(log).Save();
+                _logs.Insert(log);
+
+                if (uniqueTransaction)
+                    _logs.Save();
             }
             catch (Exception)
             {

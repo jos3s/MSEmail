@@ -12,12 +12,14 @@ public class ExecuteTRA
     private readonly EmailRepository _emailRepository;
     private readonly CommonLog _commonLog;
     private readonly AppDbContext _context;
+    private readonly UnitOfWork _uow;
 
     public ExecuteTRA(AppDbContext context)
     {
         _context = context;
         _emailRepository = new EmailRepository(context);
         _commonLog = new CommonLog(context);
+        _uow = new UnitOfWork(context);
     }
 
     public void Execute()
@@ -45,11 +47,13 @@ public class ExecuteTRA
         {
             EmailService.Send(email);
 
-            _emailRepository.Save();
+            _emailRepository.Update(email).Save();
         }
         catch (Exception ex)
         {
-            _commonLog.SaveExceptionLog(ex, nameof(Send), this.GetType().Name, ServiceType.Microservice);
+            _emailRepository.Update(email);
+            _commonLog.SaveExceptionLog(ex, nameof(Send), this.GetType().Name, ServiceType.Microservice, uniqueTransaction: false);
+            _uow.Commit();
         }
     }
 }
