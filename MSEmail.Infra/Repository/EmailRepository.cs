@@ -1,5 +1,6 @@
 ﻿using MsEmail.Domain.Entities;
 using MsEmail.Infra.Context;
+using MSEmail.Domain.Enums;
 using MSEmail.Domain.Interface;
 using System.Linq.Expressions;
 
@@ -72,6 +73,10 @@ namespace MSEmail.Infra.Repository
             return _context.Emails.Where(expression).ToList();
         }
 
+        public List<Email> GetEmailsByStatus(EmailStatus status)
+        {
+            return _context.Emails.Where(x => x.Status.Equals(status)).ToList();
+        }
 
         #region Dispose
         private bool disposed = false;

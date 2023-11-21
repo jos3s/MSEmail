@@ -1,5 +1,5 @@
-﻿using MS.Domain.Enums;
-using MsEmail.Domain.Entities.Common;
+﻿using MsEmail.Domain.Entities.Common;
+using MSEmail.Domain.Enums;
 using System.Text;
 
 namespace MsEmail.Domain.Entities

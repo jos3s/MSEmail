@@ -1,4 +1,4 @@
-﻿namespace MS.Domain.Enums
+﻿namespace MSEmail.Domain.Enums
 {
     public enum EmailStatus
     {
