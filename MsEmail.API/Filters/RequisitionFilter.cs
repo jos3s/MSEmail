@@ -24,12 +24,12 @@ namespace MsEmail.API.Filters
             {
                 ControllerName = routeData.Values["controller"].ToString(),
                 ActionName = routeData.Values["action"].ToString(),
+                ServiceType = MSEmail.Domain.Enums.ServiceType.API,
             };
             log.CreationDate = log.UpdateDate = DateTime.Now;
             log.CreationUserId = log.UpdateUserId = _actionExecutingContext.HttpContext?.User?.GetUserID() ?? ConfigHelper.DefaultUserId();
             _context.SystemLogs.Add(log);
             _context.SaveChanges();
         }
-
     }
 }
