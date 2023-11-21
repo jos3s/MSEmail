@@ -135,9 +135,7 @@ namespace MsEmail.API.Controllers
             }
         }
 
-
-
-        [HttpDelete]
+        [HttpDelete("{id}")]
         [RequisitionFilter]
         [Authorize]
         public IActionResult Delete(long id)
