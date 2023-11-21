@@ -4,7 +4,6 @@ using MS.Domain.Enums;
 using MsEmail.API.Filters;
 using MsEmail.API.Models;
 using MsEmail.API.Models.EmailModel;
-using MsEmail.API.Service;
 using MsEmail.Domain.Entities;
 using MsEmail.Infra.Context;
 using MSEmail.Common;
@@ -84,9 +83,6 @@ namespace MsEmail.API.Controllers
                 email.CreationUserId = email.UpdateUserId = (long)this.User.GetUserID();
 
                 _emails.Insert(email).Save();
-
-                new EmailService().SendEmail(email);
-                _emails.Update(email).Save();
 
                 ViewEmailModel viewEmailModel = email;
 
