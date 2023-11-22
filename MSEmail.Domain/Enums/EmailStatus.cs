@@ -4,6 +4,8 @@
     {
         Created,
         Sent,
-        Error
+        Error,
+        Draft,
+        PreSend
     }
 }
