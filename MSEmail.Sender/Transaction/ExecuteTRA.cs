@@ -26,7 +26,7 @@ public class ExecuteTRA
     {
         try
         {
-            List<Email> emails = _emailRepository.GetEmailsByStatus(EmailStatus.Created);
+            List<Email> emails = _emailRepository.GetEmailsByStatus(EmailStatus.PreSend);
 
             emails = emails.Where(x => x.SendDate < DateTime.Now).ToList();
 
