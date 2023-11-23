@@ -39,7 +39,7 @@ namespace MsEmail.API.Models.EmailModel
                 EmailTo = createEmailModel.EmailTo,
                 Subject = createEmailModel.Subject,
                 Body = createEmailModel.Body,
-                SendDate = (DateTime)createEmailModel.SendDate,
+                SendDate = createEmailModel.SendDate,
             };
         }
     }
