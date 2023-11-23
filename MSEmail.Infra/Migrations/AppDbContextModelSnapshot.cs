@@ -139,7 +139,7 @@ namespace MSEmail.Infra.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("SendDate")
+                    b.Property<DateTime?>("SendDate")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("Status")

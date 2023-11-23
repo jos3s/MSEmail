@@ -12,8 +12,8 @@ using MsEmail.Infra.Context;
 namespace MSEmail.Infra.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20231117023603_0001")]
-    partial class _0001
+    [Migration("20231122211830_0024")]
+    partial class _0024
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,6 +33,10 @@ namespace MSEmail.Infra.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
+                    b.Property<string>("ClassName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
@@ -49,6 +53,9 @@ namespace MSEmail.Infra.Migrations
                     b.Property<string>("MethodName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ServiceType")
+                        .HasColumnType("int");
 
                     b.Property<string>("Source")
                         .IsRequired()
@@ -93,6 +100,9 @@ namespace MSEmail.Infra.Migrations
                     b.Property<DateTime?>("DeletionDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("ServiceType")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("UpdateDate")
                         .HasColumnType("datetime2");
 
@@ -131,6 +141,9 @@ namespace MSEmail.Infra.Migrations
                     b.Property<string>("EmailTo")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("SendDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
