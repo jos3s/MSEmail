@@ -94,5 +94,48 @@ namespace MSEmail.Common.Utils
                 throw;
             }
         }
+
+        public static bool GetRunWorkerCreatedEmail()
+        {
+            try
+            {
+                bool value = false;
+                bool.TryParse(GetConfiguration("RunWorkerCreatedEmail"), out value);
+                return value;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public static bool GetRunWorkerDraftEmail()
+        {
+            try
+            {
+                bool value = false;
+                bool.TryParse(GetConfiguration("RunWorkerDraftEmail"), out value);
+                return value;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public static double GetRunExecutionTime()
+        {
+            try
+            {
+                double value = 5000;
+                double.TryParse(GetConfiguration("RunExecutionTime"), out value);
+                return value;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }
