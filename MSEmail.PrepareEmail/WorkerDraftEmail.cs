@@ -8,13 +8,11 @@ namespace MSEmail.PrepareEmail
     {
         private readonly ILogger<WorkerCreatedEmail> _logger;
         private IServiceProvider _serviceProvider;
-        private ExecuteDraftEmailTRA _tra;
 
-        public WorkerDraftEmail(ILogger<WorkerCreatedEmail> logger, IServiceProvider serviceProvider, ExecuteDraftEmailTRA executeDraftEmailTRA)
+        public WorkerDraftEmail(ILogger<WorkerCreatedEmail> logger, IServiceProvider serviceProvider)
         {
             _logger = logger;
             _serviceProvider = serviceProvider;
-            _tra = executeDraftEmailTRA;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -23,12 +21,16 @@ namespace MSEmail.PrepareEmail
             {
                 if (ConfigHelper.GetRunWorkerDraftEmail())
                 {
+                    _logger.LogInformation("Worker Draft Email running at: {time}", DateTimeOffset.Now);
+                    
+                    #region context
                     using var scope = _serviceProvider.CreateScope();
                     var services = scope.ServiceProvider;
                     AppDbContext _context = services.GetService<AppDbContext>();
-                    _tra.Execute(_context);
-                    _logger.LogInformation("Worker Draft Email running at: {time}", DateTimeOffset.Now);
-                    await Task.Delay(1000, stoppingToken);
+                    #endregion
+
+                    new ExecuteTRA(_context).Execute(Domain.Enums.EmailStatus.Draft);
+                    await Task.Delay(TimeSpan.FromMilliseconds(ConfigHelper.GetRunExecutionTime()), stoppingToken);
                 }
             }
         }

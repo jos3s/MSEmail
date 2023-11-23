@@ -22,14 +22,18 @@ namespace MSEmail.PrepareEmail
         {
             while (!stoppingToken.IsCancellationRequested)
             {
-                if (ConfigHelper.GetRunWorkerCreatedEmail())
+                if (ConfigHelper.GetRunWorkerDraftEmail())
                 {
+                    _logger.LogInformation("Worker Created Email running at: {time}", DateTimeOffset.Now);
+
+                    #region context
                     using var scope = _serviceProvider.CreateScope();
                     var services = scope.ServiceProvider;
                     AppDbContext _context = services.GetService<AppDbContext>();
-                    _tra.Execute(_context);
-                    _logger.LogInformation("Worker Created Email running at: {time}", DateTimeOffset.Now);
-                    await Task.Delay(1000, stoppingToken);
+                    #endregion
+
+                    new ExecuteTRA(_context).Execute(Domain.Enums.EmailStatus.Created);
+                    await Task.Delay(TimeSpan.FromSeconds(ConfigHelper.GetRunExecutionTime()), stoppingToken);
                 }
             }
         }
