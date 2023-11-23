@@ -8,14 +8,12 @@ namespace MSEmail.PrepareEmail
     {
         private readonly ILogger<WorkerCreatedEmail> _logger;
 
-        private ExecuteCreatedEmailTRA _tra;
         private IServiceProvider _serviceProvider;
 
-        public WorkerCreatedEmail(ILogger<WorkerCreatedEmail> logger, IServiceProvider serviceProvider, ExecuteCreatedEmailTRA executeCreatedEmailTRA)
+        public WorkerCreatedEmail(ILogger<WorkerCreatedEmail> logger, IServiceProvider serviceProvider)
         {
             _logger = logger;
             _serviceProvider = serviceProvider;
-            _tra = executeCreatedEmailTRA;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
