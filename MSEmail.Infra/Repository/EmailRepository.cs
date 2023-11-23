@@ -79,6 +79,16 @@ namespace MSEmail.Infra.Repository
             return _context.Emails.Where(x => x.Status.Equals(status)).ToList();
         }
 
+        public IRepository<Email> UpdateStatus(Email email)
+        {
+            email.UpdateDate = DateTime.Now;
+            var dbEntry = _context.Entry(email);
+            dbEntry.Property(x => x.Status).IsModified = true;
+            dbEntry.Property(x => x.UpdateDate).IsModified = true;
+            dbEntry.Property(x => x.UpdateUserId).IsModified = true;
+            return this;
+        }
+
         #region Dispose
         private bool disposed = false;
 

@@ -17,7 +17,6 @@ namespace MsEmail.API.Models.EmailModel
 
         public string? Body { get; set; }
 
-        [Required(ErrorMessageResourceName = "REQ0001", ErrorMessageResourceType = typeof(APIMsg))]
         public DateTime? SendDate { get; set; }
 
         public static implicit operator CreateEmailModel(Domain.Entities.Email email)
@@ -40,7 +39,7 @@ namespace MsEmail.API.Models.EmailModel
                 EmailTo = createEmailModel.EmailTo,
                 Subject = createEmailModel.Subject,
                 Body = createEmailModel.Body,
-                SendDate = (DateTime)createEmailModel.SendDate,
+                SendDate = createEmailModel.SendDate,
             };
         }
     }

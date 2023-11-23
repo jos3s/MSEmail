@@ -16,7 +16,7 @@ namespace MsEmail.API.Models.EmailModel
 
         public EmailStatus Status { get; set; }
 
-        public DateTime SendDate { get; set; }
+        public DateTime? SendDate { get; set; }
 
         public DateTime CreationDate { get; set; }
 
@@ -34,10 +34,10 @@ namespace MsEmail.API.Models.EmailModel
                 Subject = email.Subject,
                 Body = email.Body,
                 Status = email.Status,
-                SendDate = DateTime.Now,
-                CreationDate = DateTime.Now,
-                UpdateDate = DateTime.Now,
-                DeletionDate = DateTime.Now,
+                SendDate = email.SendDate,
+                CreationDate = email.CreationDate,
+                UpdateDate = email.UpdateDate,
+                DeletionDate = email.DeletionDate,
             };
         }
     }

@@ -23,4 +23,8 @@
     <ProjectReference Include="..\MSEmail.Common\MSEmail.Common.csproj" />
     <ProjectReference Include="..\MSEmail.Domain\MSEmail.Domain.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
 </Project>

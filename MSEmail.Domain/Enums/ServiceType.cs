@@ -4,6 +4,7 @@
     {
         API,
         WebUI,
-        Microservice
+        MSSender,
+        MSPrepareEmail
     }
 }
