@@ -1,4 +1,5 @@
-﻿using MsEmail.Domain.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using MsEmail.Domain.Entities;
 using MsEmail.Infra.Context;
 using MSEmail.Domain.Enums;
 using MSEmail.Domain.Interface;
@@ -77,6 +78,16 @@ namespace MSEmail.Infra.Repository
         public List<Email> GetEmailsByStatus(EmailStatus status)
         {
             return _context.Emails.Where(x => x.Status.Equals(status)).ToList();
+        }
+
+        public IRepository<Email> UpdateStatus(Email email)
+        {
+            email.UpdateDate = DateTime.Now;
+            var dbEntry = _context.Entry(email);
+            dbEntry.Property(x => x.Status).IsModified = true;
+            dbEntry.Property(x => x.UpdateDate).IsModified = true;
+            dbEntry.Property(x => x.UpdateUserId).IsModified = true;
+            return this;
         }
 
         #region Dispose
