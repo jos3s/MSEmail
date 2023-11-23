@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using MsEmail.Domain.Entities;
+﻿using MsEmail.Domain.Entities;
 using MsEmail.Infra.Context;
 using MSEmail.Domain.Enums;
 using MSEmail.Domain.Interface;
