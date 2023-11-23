@@ -37,7 +37,7 @@ public class ExecuteTRA
         }
         catch (Exception ex)
         {
-            _commonLog.SaveExceptionLog(ex, nameof(Execute), this.GetType().Name, ServiceType.Microservice);
+            _commonLog.SaveExceptionLog(ex, nameof(Execute), this.GetType().Name, ServiceType.MSSender);
         }
     }
 
@@ -52,7 +52,7 @@ public class ExecuteTRA
         catch (Exception ex)
         {
             _emailRepository.Update(email);
-            _commonLog.SaveExceptionLog(ex, nameof(Send), this.GetType().Name, ServiceType.Microservice, uniqueTransaction: false);
+            _commonLog.SaveExceptionLog(ex, nameof(Send), this.GetType().Name, ServiceType.MSSender, uniqueTransaction: false);
             _uow.Commit();
         }
     }
