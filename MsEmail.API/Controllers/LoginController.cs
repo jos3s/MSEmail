@@ -38,7 +38,7 @@ namespace MsEmail.API.Controllers
                     return BadRequest(ModelState);
 
                 User existentUser = _users.GetByLogin(createUserModel.Email);
-                if (createUserModel.Email.ToLower().Equals(existentUser.Email.ToLower()))
+                if (createUserModel.Email.ToLower().Equals(existentUser?.Email.ToLower()))
                     return BadRequest(new APIResult { Message = APIMsg.ERR0006});
 
                 User user = createUserModel;
