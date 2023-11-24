@@ -159,5 +159,28 @@ namespace MsEmail.API.Controllers
                 return Problem(APIMsg.ERR0004);
             }
         }
+
+        [Authorize]
+        [HttpGet("drafts")]
+        [RequisitionFilter]
+        public IActionResult GetEmailsInDraft()
+        {
+            try
+            {
+                List<Email> emails = _emails.GetEmailsByStatusAndUserId(EmailStatus.Draft, (long)this.User.GetUserID());
+            
+                if(emails.Count == 0)
+                    return NoContent();
+
+                List<ViewEmailModel> viewEmailModels = emails.Select(email => (ViewEmailModel)email).ToList();
+
+                return Ok(new ListEmailModel { Count = viewEmailModels.Count, Emails = viewEmailModels});
+            }
+            catch (Exception ex)
+            {
+                _commonLog.SaveExceptionLog(ex, nameof(GetEmailsInDraft), this.GetType().Name, ServiceType.API);
+                return Problem(APIMsg.ERR0004);
+            }
+        }
     }
 }
