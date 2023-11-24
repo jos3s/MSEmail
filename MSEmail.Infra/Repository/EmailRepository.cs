@@ -89,6 +89,12 @@ namespace MSEmail.Infra.Repository
             return this;
         }
 
+
+        public List<Email> GetEmailsByStatusAndUserId(EmailStatus status, long userId)
+        {
+            return _context.Emails.Where(x => x.Status.Equals(status) && x.CreationUserId == userId).ToList();
+        }
+
         #region Dispose
         private bool disposed = false;
 
@@ -109,8 +115,6 @@ namespace MSEmail.Infra.Repository
             Dispose(true);
             GC.SuppressFinalize(this);
         }
-
-
         #endregion
     }
 }
