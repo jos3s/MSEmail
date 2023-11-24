@@ -1,4 +1,5 @@
-﻿using MSEmail.Common;
+﻿using MSEmail.API.Validations;
+using MSEmail.Common;
 using System.ComponentModel.DataAnnotations;
 
 namespace MsEmail.API.Models.EmailModel
@@ -17,6 +18,7 @@ namespace MsEmail.API.Models.EmailModel
 
         public string? Body { get; set; }
 
+        [DateValid]
         public DateTime? SendDate { get; set; }
 
         public static implicit operator CreateEmailModel(Domain.Entities.Email email)
