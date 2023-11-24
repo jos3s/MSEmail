@@ -75,7 +75,7 @@ namespace MsEmail.API.Controllers
         {
             try
             {
-                if(!ModelState.IsValid)
+                if (!ModelState.IsValid)
                     return BadRequest(ModelState);
 
                 Email email = createEmailModel;
@@ -98,11 +98,11 @@ namespace MsEmail.API.Controllers
         [HttpPatch("{id}")]
         [RequisitionFilter]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ViewEmailModel))]
-        public IActionResult Patch([FromRoute]long id, UpdateEmailModel updateEmail)
+        public IActionResult Patch([FromRoute] long id, UpdateEmailModel updateEmail)
         {
             try
             {
-                if(updateEmail.IsNull())
+                if (updateEmail.IsNull())
                     return BadRequest(new APIResult { Message = APIMsg.REQ0002 });
                 
                 Email email = _emails.GetById(id);
@@ -110,15 +110,15 @@ namespace MsEmail.API.Controllers
                 if (email == null) return NotFound(id);
 
                 if (email.Status.Equals(EmailStatus.Sent))
-                    return StatusCode(409, new APIResult { Message = APIMsg.ERR0005 } );
+                    return StatusCode(409, new APIResult { Message = APIMsg.ERR0005 });
 
-                if(!updateEmail.SendDate.IsNull())
+                if (!updateEmail.SendDate.IsNull())
                     email.SendDate = (DateTime)updateEmail.SendDate;
 
-                if(!updateEmail.Subject.IsNull())
+                if (!updateEmail.Subject.IsNull())
                     email.Subject = updateEmail.Subject;
 
-                if(!updateEmail.Body.IsNull())
+                if (!updateEmail.Body.IsNull())
                     email.Body = updateEmail.Body;
 
                 email.UpdateUserId = (long)this.User.GetUserID();
@@ -145,8 +145,8 @@ namespace MsEmail.API.Controllers
                 Email email = _emails.GetById(id);
                 if (email == null) return NotFound();
                 
-                if(email.Status.Equals(EmailStatus.Sent))
-                    return BadRequest(new APIResult { Message = APIMsg.ERR0007});
+                if (email.Status.Equals(EmailStatus.Sent))
+                    return BadRequest(new APIResult { Message = APIMsg.ERR0007 });
 
                 email.DeletionDate = DateTime.Now;
                 email.UpdateUserId = (long)this.User.GetUserID();
