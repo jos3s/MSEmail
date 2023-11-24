@@ -5,6 +5,7 @@ using MsEmail.API.Models;
 using MsEmail.API.Models.EmailModel;
 using MsEmail.Domain.Entities;
 using MsEmail.Infra.Context;
+using MSEmail.API.Models.Email;
 using MSEmail.Common;
 using MSEmail.Domain.Enums;
 using MSEmail.Infra.Business;
@@ -40,7 +41,9 @@ namespace MsEmail.API.Controllers
                 else
                     emails = _emails.GetEmailsByUserId((long)this.User.GetUserID(), withDeletionDate);
 
-                return Ok(new { Count = emails.Count(), emails });
+                List<ViewEmailModel> viewEmailModels = emails.Select(e => (ViewEmailModel)e).ToList();
+
+                return Ok(new ListEmailModel{ Count = emails.Count(), Emails = viewEmailModels });
             }
             catch (Exception ex)
             {
@@ -104,7 +107,7 @@ namespace MsEmail.API.Controllers
             {
                 if (updateEmail.IsNull())
                     return BadRequest(new APIResult { Message = APIMsg.REQ0002 });
-                
+
                 Email email = _emails.GetById(id);
 
                 if (email == null) return NotFound(id);
@@ -144,7 +147,7 @@ namespace MsEmail.API.Controllers
             {
                 Email email = _emails.GetById(id);
                 if (email == null) return NotFound();
-                
+
                 if (email.Status.Equals(EmailStatus.Sent))
                     return BadRequest(new APIResult { Message = APIMsg.ERR0007 });
 
