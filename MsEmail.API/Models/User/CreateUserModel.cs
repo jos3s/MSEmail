@@ -15,7 +15,7 @@ namespace MsEmail.API.Models.UserModels
             return new User
             {
                 Email = createUser.Email,
-                Password = createUser.Password,
+                Password = createUser.Password.Hashing(),
             };
         }
     }
