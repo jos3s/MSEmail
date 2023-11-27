@@ -69,7 +69,7 @@ namespace MsEmail.API.Controllers
                 if (user == null)
                     return BadRequest(new APIResult{ Message = APIMsg.ERR0002 });
 
-                if (user.Password != login.Password)
+                if (!user.Password.Equals(login.Password.Hashing()))
                     return BadRequest(new APIResult{ Message = APIMsg.ERR0003 });
 
                 var token = TokenServices.GenerateToken(user);
