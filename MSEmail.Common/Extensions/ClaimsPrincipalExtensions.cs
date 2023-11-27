@@ -1,16 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Security.Claims;
 
-public static class Extensions
+public static class ClaimsPrincipalExtensions
 {
-    public static bool IsNull(this object? obj)
-    {
-        return obj == null;
-    }
 
     public static long? GetUserID(this ClaimsPrincipal User)
     {
