@@ -1,10 +1,17 @@
 ﻿using MsEmail.Domain.Entities.Common;
+using System.ComponentModel.DataAnnotations;
 
 namespace MsEmail.Domain.Entities
 {
     public class User : BaseEntity
     {
-        public string Email { get; set; }
+        private string _email;
+
+        public string Email
+        {
+            get => _email.ToLower();
+            set => _email = value;
+        }
 
         public string Password { get; set; }
 

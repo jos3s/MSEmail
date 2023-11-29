@@ -5,8 +5,14 @@ namespace MsEmail.API.Models.UserModels
 {
     public class CreateUserModel
     {
+        private string _email;
+
         [Required]
-        public string Email { get; set; }
+        public string Email
+        {
+            get => _email.ToLower();
+            set => _email = value;
+        }
 
         [Required]
         public string Password { get; set; }
