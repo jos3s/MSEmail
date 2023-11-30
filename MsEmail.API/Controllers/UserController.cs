@@ -9,6 +9,8 @@ using MSEmail.Domain.Enums;
 using MSEmail.Infra.Business;
 using MsEmail.Infra.Context;
 using MSEmail.Infra.Repository;
+using Microsoft.AspNetCore.Authorization;
+using MSEmail.API.Models.User;
 
 namespace MSEmail.API.Controllers
 {
@@ -49,6 +51,26 @@ namespace MSEmail.API.Controllers
             catch (Exception ex)
             {
                 _commonLog.SaveExceptionLog(ex, nameof(Create), this.GetType().Name, ServiceType.API);
+                return Problem(APIMsg.ERR0004);
+            }
+        }
+
+        [HttpGet("all")]
+        [RequisitionFilter]
+        [Authorize(Roles = "admin")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<ViewUserModel>))]
+        public IActionResult GetAllUsers()
+        {
+            try
+            {
+                List<User> user = _users.GetAll();
+                List<ViewUserModel> viewUsers = user.Select(user => (ViewUserModel)user).ToList();
+                
+                return Ok(new ListUserModel { Count = viewUsers.Count, Users = viewUsers});
+            }
+            catch (Exception ex)
+            {
+                _commonLog.SaveExceptionLog(ex, nameof(GetAllUsers), this.GetType().Name, ServiceType.API);
                 return Problem(APIMsg.ERR0004);
             }
         }
