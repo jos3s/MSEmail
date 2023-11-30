@@ -1,11 +1,10 @@
 ﻿using MsEmail.API.Models.EmailModel;
+using MSEmail.API.Models.Base;
 
 namespace MSEmail.API.Models.Email
 {
-    public class ListEmailModel
+    public class ListEmailModel : BaseListModel
     {
-        public int Count { get; set; }
-
         public List<ViewEmailModel> Emails { get; set; }
     }
 }
