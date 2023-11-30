@@ -49,7 +49,7 @@ namespace MSEmail.Infra.Repository
         public List<User> GetAll(bool withDeletionDate = false)
         {
             if(withDeletionDate) return _context.Users.ToList();
-            return _context.Users.Where(x=> x.DeletionDate.IsNull()).ToList();
+            return _context.Users.Where(x=> x.DeletionDate == null).ToList();
         }
 
         public User? GetById(long id)
