@@ -1,39 +1,39 @@
 ﻿using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace MSEmail.Common.Utils
+namespace MSEmail.Common.Utils;
+
+public class ConfigHelper
 {
-    public class ConfigHelper
+    private static IConfiguration ConfigurationSettings => ConfigurationAppSettings.Configuration;
+
+    public static string GetConfiguration(string key)
     {
-        private static IConfiguration ConfigurationSettings => ConfigurationAppSettings.Configuration;
+        if (ConfigurationSettings.GetSection("ConnectionStrings").GetSection(key) == null)
+            return ConfigurationSettings.GetSection("ConnectionStrings").GetSection(key).Value;
 
-        public static string GetConfiguration(string key)
+        return ConfigurationSettings.GetSection("AppSettings").GetSection(key).Value;
+    }
+
+    public static long DefaultUserId
+    {
+        get
         {
-            if (ConfigurationSettings.GetSection("ConnectionStrings").GetSection(key) == null)
-                return ConfigurationSettings.GetSection("ConnectionStrings").GetSection(key).Value;
-
-            return ConfigurationSettings.GetSection("AppSettings").GetSection(key).Value;
-        }
-
-        public static long DefaultUserId()
-        {
+            long value = 0;
             try
             {
-                long value = 0;
                 long.TryParse(GetConfiguration("DefaultUserId"), out value);
                 return value;
             }
             catch (Exception)
             {
-                return 0;
+                return value;
             }
         }
+    }
 
-        public static string GetSmtpHost()
+    public static string GetSmtpHost
+    {
+        get
         {
             try
             {
@@ -44,22 +44,28 @@ namespace MSEmail.Common.Utils
                 return "";
             }
         }
+    }
 
-        public static int GetSmtpPort()
+    public static int GetSmtpPort
+    {
+        get
         {
+            var value = 0;
             try
             {
-                int value = 0;
                 int.TryParse(GetConfiguration("SmtpPort"), out value);
                 return value;
             }
             catch (Exception)
             {
-                return 0;
+                return value;
             }
         }
+    }
 
-        public static string GetSmtpUserName()
+    public static string GetSmtpUserName
+    {
+        get
         {
             try
             {
@@ -70,8 +76,11 @@ namespace MSEmail.Common.Utils
                 return "";
             }
         }
+    }
 
-        public static string GetSmtpPassword()
+    public static string GetSmtpPassword
+    {
+        get
         {
             try
             {
@@ -79,11 +88,14 @@ namespace MSEmail.Common.Utils
             }
             catch (Exception)
             {
-                throw;
+                return "";
             }
         }
+    }
 
-        public static string GetTokenSecret()
+    public static string GetTokenSecret
+    {
+        get
         {
             try
             {
@@ -91,50 +103,58 @@ namespace MSEmail.Common.Utils
             }
             catch (Exception)
             {
-                throw;
+                return "";
             }
         }
+    }
 
-        public static bool GetRunWorkerCreatedEmail()
+    public static bool GetRunWorkerCreatedEmail
+    {
+        get
         {
+            var value = false;
             try
             {
-                bool value = false;
                 bool.TryParse(GetConfiguration("RunWorkerCreatedEmail"), out value);
                 return value;
             }
             catch (Exception)
             {
-                throw;
+                return value;
             }
         }
+    }
 
-        public static bool GetRunWorkerDraftEmail()
+    public static bool GetRunWorkerDraftEmail
+    {
+        get
         {
+            var value = false;
             try
             {
-                bool value = false;
                 bool.TryParse(GetConfiguration("RunWorkerDraftEmail"), out value);
                 return value;
             }
             catch (Exception)
             {
-                throw;
+                return value;
             }
         }
+    }
 
-        public static double GetRunExecutionTime()
+    public static double ServiceInterval
+    {
+        get
         {
+            var value = 10D;
             try
             {
-                double value = 5000;
-                double.TryParse(GetConfiguration("RunExecutionTime"), out value);
+                double.TryParse(GetConfiguration("ServiceInterval"), out value);
                 return value;
             }
             catch (Exception)
             {
-
-                throw;
+                return value;
             }
         }
     }
