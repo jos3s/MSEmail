@@ -5,42 +5,41 @@ using MSEmail.Domain.Enums;
 using MSEmail.Infra.Business;
 using MSEmail.Infra.Repository;
 
-namespace MSEmail.PrepareEmail.Transaction
+namespace MSEmail.PrepareEmail.Transaction;
+
+public class ExecuteTRA
 {
-    public class ExecuteTRA
+    private EmailRepository _emails;
+    private CommonLog _log;
+
+    public ExecuteTRA(AppDbContext context)
     {
-        private EmailRepository _emails;
-        private CommonLog _log;
+        _emails = new EmailRepository(context);
+        _log = new CommonLog(context);
+    }
 
-        public ExecuteTRA(AppDbContext context)
+    public void Execute(EmailStatus emailStatus)
+    {
+        try
         {
-            _emails = new EmailRepository(context);
-            _log = new CommonLog(context);
+            List<Email> emails = _emails.GetEmailsByStatus(emailStatus);
+
+            foreach (Email email in emails)
+            {
+                if (!email.SendDate.IsNull())
+                    email.Status = EmailStatus.PreSend;
+                else
+                    email.Status = EmailStatus.Draft;
+
+                email.UpdateUserId = ConfigHelper.DefaultUserId;
+                _emails.UpdateStatus(email);
+            }   
+
+            _emails.Save();
         }
-
-        public void Execute(EmailStatus emailStatus)
+        catch (Exception ex)
         {
-            try
-            {
-                List<Email> emails = _emails.GetEmailsByStatus(emailStatus);
-
-                foreach (Email email in emails)
-                {
-                    if (!email.SendDate.IsNull())
-                        email.Status = EmailStatus.PreSend;
-                    else
-                        email.Status = EmailStatus.Draft;
-
-                    email.UpdateUserId = ConfigHelper.DefaultUserId();
-                    _emails.UpdateStatus(email);
-                }
-
-                _emails.Save();
-            }
-            catch (Exception ex)
-            {
-                _log.SaveExceptionLog(ex, nameof(Execute), this.GetType().Name, ServiceType.MSPrepareEmail);
-            }
+            _log.SaveExceptionLog(ex, nameof(Execute), this.GetType().Name, ServiceType.MSPrepareEmail);
         }
     }
 }

@@ -13,10 +13,10 @@ IHost host = Host.CreateDefaultBuilder(args)
             b => b.MigrationsAssembly("MSEmail.Infra")
         ));
 
-        if (ConfigHelper.GetRunWorkerCreatedEmail())
+        if (ConfigHelper.GetRunWorkerCreatedEmail)
             services.AddHostedService<WorkerCreatedEmail>();
 
-        if (ConfigHelper.GetRunWorkerDraftEmail())
+        if (ConfigHelper.GetRunWorkerDraftEmail)
             services.AddHostedService<WorkerDraftEmail>();
     })
     .Build();

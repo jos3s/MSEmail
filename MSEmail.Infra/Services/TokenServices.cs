@@ -5,41 +5,40 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace MSEmail.Infra.Services
+namespace MSEmail.Infra.Services;
+
+public static class TokenServices 
 {
-    public static class TokenServices 
+    public static string GenerateToken(User user) 
     {
-        public static string GenerateToken(User user) 
+        var handler = new JwtSecurityTokenHandler();
+
+        var key = Encoding.UTF8.GetBytes(ConfigHelper.GetTokenSecret);
+
+        var credentials = new SigningCredentials(
+            new SymmetricSecurityKey(key),
+            SecurityAlgorithms.HmacSha256Signature);
+
+        var tokenDescriptor = new SecurityTokenDescriptor
         {
-            var handler = new JwtSecurityTokenHandler();
+            Subject = GenerateClaims(user),
+            SigningCredentials = credentials,
+            Expires = DateTime.UtcNow.AddHours(8)
+        };
 
-            var key = Encoding.UTF8.GetBytes(ConfigHelper.GetTokenSecret());
+        var token = handler.CreateToken(tokenDescriptor);
 
-            var credentials = new SigningCredentials(
-                new SymmetricSecurityKey(key),
-                SecurityAlgorithms.HmacSha256Signature);
+        return handler.WriteToken(token);
+    }
 
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = GenerateClaims(user),
-                SigningCredentials = credentials,
-                Expires = DateTime.UtcNow.AddHours(8)
-            };
+    private static ClaimsIdentity GenerateClaims(User user)
+    {
+        var ci = new ClaimsIdentity();
 
-            var token = handler.CreateToken(tokenDescriptor);
+        ci.AddClaim(new Claim(ClaimTypes.Name, user.Email));
+        ci.AddClaim(new Claim(ClaimTypes.Role, user.Role));
+        ci.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()));
 
-            return handler.WriteToken(token);
-        }
-
-        private static ClaimsIdentity GenerateClaims(User user)
-        {
-            var ci = new ClaimsIdentity();
-
-            ci.AddClaim(new Claim(ClaimTypes.Name, user.Email));
-            ci.AddClaim(new Claim(ClaimTypes.Role, user.Role));
-            ci.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()));
-
-            return ci;
-        }
+        return ci;
     }
 }
