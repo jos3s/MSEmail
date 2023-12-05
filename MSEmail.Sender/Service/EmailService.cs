@@ -10,12 +10,12 @@ public static class EmailService
 {
     private static SmtpClient _smtpClient => new SmtpClient
     {
-        Host = ConfigHelper.GetSmtpHost(),
-        Port = ConfigHelper.GetSmtpPort(),
+        Host = ConfigHelper.GetSmtpHost,
+        Port = ConfigHelper.GetSmtpPort,
         EnableSsl = true,
         DeliveryMethod = SmtpDeliveryMethod.Network,
         UseDefaultCredentials = false,
-        Credentials = new NetworkCredential(ConfigHelper.GetSmtpUserName(), ConfigHelper.GetSmtpPassword())
+        Credentials = new NetworkCredential(ConfigHelper.GetSmtpUserName, ConfigHelper.GetSmtpPassword)
     };
 
     public static void Send(Email email)
