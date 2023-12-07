@@ -1,0 +1,22 @@
+﻿@model MSEmail.WebUI.Models.User.LoginViewModel
+@{
+}
+<form id="loginForm">
+    <div class="mb-3">
+        <label asp-for="Email" class="control-label"></label>
+        <input asp-for="Email" class="form-control" id="login" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Password" class="control-label"></label>
+        <input asp-for="Password" class="form-control" id="password" />
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <input id="loginButton" type="button" value="Login" class="btn btn-primary" />
+    </div>
+</form>
+
+
+<script src="js/login/Login.js" type="text/javascript" language="javascript"></script>
+
