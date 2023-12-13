@@ -15,7 +15,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MSEmail.Sender", "MSEmail.S
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MSEmail.PrepareEmail", "MSEmail.PrepareEmail\MSEmail.PrepareEmail.csproj", "{5B34FC73-228A-4ED5-908F-BF22309773E7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MSEmail.WebUI", "MSEmail.WebUI\MSEmail.WebUI.csproj", "{35622F17-ADFC-42F6-A4BA-C636E85D6342}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MSEmail.WebUI", "MSEmail.WebUI\MSEmail.WebUI.csproj", "{35622F17-ADFC-42F6-A4BA-C636E85D6342}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MsEmail.Tests.Architecture", "Tests\MsEmail.Tests.Architeture\MsEmail.Tests.Architecture.csproj", "{9B27919F-1A17-40A4-B47B-CFFEB329820D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{187E872F-2EED-42F0-9B86-8AAC7AE9BE9A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,9 +55,16 @@ Global
 		{35622F17-ADFC-42F6-A4BA-C636E85D6342}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{35622F17-ADFC-42F6-A4BA-C636E85D6342}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{35622F17-ADFC-42F6-A4BA-C636E85D6342}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B27919F-1A17-40A4-B47B-CFFEB329820D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B27919F-1A17-40A4-B47B-CFFEB329820D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B27919F-1A17-40A4-B47B-CFFEB329820D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B27919F-1A17-40A4-B47B-CFFEB329820D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{9B27919F-1A17-40A4-B47B-CFFEB329820D} = {187E872F-2EED-42F0-9B86-8AAC7AE9BE9A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F24B5975-2D7B-4463-824B-098B5DE3144E}
