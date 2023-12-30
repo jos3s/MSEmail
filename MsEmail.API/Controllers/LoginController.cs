@@ -4,11 +4,11 @@ using MsEmail.API.Filters;
 using MsEmail.API.Models;
 using MsEmail.API.Models.Token;
 using MsEmail.API.Models.UserModels;
-using MsEmail.Domain.Entities;
-using MsEmail.Infra.Context;
 using MSEmail.Common;
+using MsEmail.Domain.Entities;
 using MSEmail.Domain.Enums;
 using MSEmail.Infra.Business;
+using MsEmail.Infra.Context;
 using MSEmail.Infra.Repository;
 using MSEmail.Infra.Services;
 
@@ -40,7 +40,7 @@ namespace MsEmail.API.Controllers
                 if (user == null)
                     return BadRequest(new APIResult{ Message = APIMsg.ERR0002 });
 
-                if (!user.Password.Hashing().Equals(login.Password.Hashing()))
+                if (!user.Password.Equals(login.Password.Hashing()))
                     return BadRequest(new APIResult{ Message = APIMsg.ERR0003 });
 
                 var token = TokenServices.GenerateToken(user);
