@@ -61,7 +61,7 @@ No projeto da API configure um valor para **TokenSecret**
 ```
 
 
-No MSEmail.SendEmail é preciso fazer uma configuração a mais, pois para o envio do email é necessário configurar qual email vai ser utilizado como redirecionamento. Para isso pode usar o texto de suporte do google  [aqui](https://support.google.com/accounts/answer/185833).
+No MSEmail.Send é preciso fazer uma configuração a mais, pois para o envio do email é necessário configurar qual email vai ser utilizado como redirecionamento. Para isso pode usar o texto de suporte do google  [aqui](https://support.google.com/accounts/answer/185833).
 
 ```json
 {
@@ -89,14 +89,14 @@ dotnet run --project .\MsEmail.Api
 ```
 
 
-MS.PrepareEmail
+MSEmail.PrepareEmail
 ```bash
 dotnet run --project .\MsEmail.PrepareEmail
 ```
 
-MS.SendEmail
+MSEmail.Send
 ```bash
-dotnet run --project .\MsEmail.SendEmail
+dotnet run --project .\MsEmail.Send
 ```
 
 

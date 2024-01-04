@@ -20,7 +20,7 @@ public class WorkerCreatedEmail : BackgroundService
     {
         while (!stoppingToken.IsCancellationRequested)
         {
-            if (ConfigHelper.GetRunWorkerDraftEmail())
+            if (ConfigHelper.GetRunWorkerDraftEmail)
             {
                 _logger.LogInformation("Worker Created Email running at: {time}", DateTimeOffset.Now);
 
@@ -31,7 +31,7 @@ public class WorkerCreatedEmail : BackgroundService
                 #endregion
 
                 new ExecuteTRA(_context).Execute(Domain.Enums.EmailStatus.Created);
-                await Task.Delay(TimeSpan.FromSeconds(ConfigHelper.GetRunExecutionTime()), stoppingToken);
+                await Task.Delay(TimeSpan.FromMinutes(ConfigHelper.ServiceInterval), stoppingToken);
             }
         }
     }

@@ -13,7 +13,7 @@ public static class TokenServices
     {
         var handler = new JwtSecurityTokenHandler();
 
-        var key = Encoding.UTF8.GetBytes(ConfigHelper.GetTokenSecret());
+        var key = Encoding.UTF8.GetBytes(ConfigHelper.GetTokenSecret);
 
         var credentials = new SigningCredentials(
             new SymmetricSecurityKey(key),

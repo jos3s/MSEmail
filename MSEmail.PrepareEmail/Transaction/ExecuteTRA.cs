@@ -31,9 +31,9 @@ public class ExecuteTRA
                 else
                     email.Status = EmailStatus.Draft;
 
-                email.UpdateUserId = ConfigHelper.DefaultUserId();
+                email.UpdateUserId = ConfigHelper.DefaultUserId;
                 _emails.UpdateStatus(email);
-            }
+            }   
 
             _emails.Save();
         }
