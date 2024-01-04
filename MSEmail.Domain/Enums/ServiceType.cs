@@ -1,10 +1,9 @@
-﻿namespace MSEmail.Domain.Enums
+﻿namespace MSEmail.Domain.Enums;
+
+public enum ServiceType
 {
-    public enum ServiceType
-    {
-        API,
-        WebUI,
-        MSSender,
-        MSPrepareEmail
-    }
+    API,
+    WebUI,
+    MSSender,
+    MSPrepareEmail
 }

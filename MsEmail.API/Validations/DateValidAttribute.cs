@@ -1,23 +1,22 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace MSEmail.API.Validations
+namespace MSEmail.API.Validations;
+
+public class DateValidAttribute : ValidationAttribute
 {
-    public class DateValidAttribute : ValidationAttribute
+    public string GetErrorMessage() =>
+        $"Data inválida, tente novamente.";
+
+    protected override ValidationResult? IsValid(
+        object? value, ValidationContext validationContext)
     {
-        public string GetErrorMessage() =>
-            $"Data inválida, tente novamente.";
+        var sendDate = (DateTime)value;
 
-        protected override ValidationResult? IsValid(
-            object? value, ValidationContext validationContext)
+        if (!sendDate.IsNull() && sendDate.Date < DateTime.Now.Date)
         {
-            var sendDate = (DateTime)value;
-
-            if (!sendDate.IsNull() && sendDate.Date < DateTime.Now.Date)
-            {
-                return new ValidationResult(GetErrorMessage());
-            }
-
-            return ValidationResult.Success;
+            return new ValidationResult(GetErrorMessage());
         }
+
+        return ValidationResult.Success;
     }
 }

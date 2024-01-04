@@ -11,179 +11,177 @@ using MSEmail.Domain.Enums;
 using MSEmail.Infra.Business;
 using MSEmail.Infra.Repository;
 
-namespace MsEmail.API.Controllers
+namespace MsEmail.API.Controllers;
+
+[ApiController]
+[RequisitionFilter]
+[Route("api/[controller]")]
+public class EmailController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    [RequisitionFilter]
-    public class EmailController : ControllerBase
+    private readonly EmailRepository _emails;
+    private readonly CommonLog _commonLog;
+
+    public EmailController(AppDbContext context)
     {
-        private readonly EmailRepository _emails;
-        private readonly CommonLog _commonLog;
+        _emails = new EmailRepository(context);
+        _commonLog = new CommonLog(context);
+    }
 
-        public EmailController(AppDbContext context)
+    [HttpGet]
+    [RequisitionFilter]
+    [Authorize]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<Email>))]
+    public IActionResult GetAll(bool withDeletionDate)
+    {
+        try
         {
-            _emails = new EmailRepository(context);
-            _commonLog = new CommonLog(context);
+            List<Email> emails = new();
+            emails = this.User.GetRole().Equals("admin") 
+                ? _emails.GetAll(withDeletionDate) 
+                : _emails.GetEmailsByUserId((long)this.User.GetUserID(), withDeletionDate);
+
+            List<ViewEmailModel> viewEmailModels = emails.Select(e => (ViewEmailModel)e).ToList();
+
+            return Ok(new ListEmailModel{ Count = emails.Count(), Emails = viewEmailModels });
         }
-
-        [HttpGet]
-        [RequisitionFilter]
-        [Authorize]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<Email>))]
-        public IActionResult GetAll(bool withDeletionDate)
+        catch (Exception ex)
         {
-            try
-            {
-                List<Email> emails = new();
-                if (this.User.GetRole().Equals("admin"))
-                    emails = _emails.GetAll(withDeletionDate);
-                else
-                    emails = _emails.GetEmailsByUserId((long)this.User.GetUserID(), withDeletionDate);
-
-                List<ViewEmailModel> viewEmailModels = emails.Select(e => (ViewEmailModel)e).ToList();
-
-                return Ok(new ListEmailModel{ Count = emails.Count(), Emails = viewEmailModels });
-            }
-            catch (Exception ex)
-            {
-                _commonLog.SaveExceptionLog(ex, nameof(GetAll), this.GetType().Name, ServiceType.API);
-                return Problem(APIMsg.ERR0004);
-            }
+            _commonLog.SaveExceptionLog(ex, nameof(GetAll), this.GetType().Name, ServiceType.API);
+            return Problem(APIMsg.ERR0004);
         }
+    }
 
-        [HttpGet("{id}")]
-        [RequisitionFilter]
-        [Authorize]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Email))]
-        public IActionResult GetById(long id)
+    [HttpGet("{id}")]
+    [RequisitionFilter]
+    [Authorize]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Email))]
+    public IActionResult GetById(long id)
+    {
+        try
         {
-            try
-            {
-                var email = _emails.GetById(id);
-                if (email == null) return NotFound();
-                return Ok(email);
-            }
-            catch (Exception ex)
-            {
-                _commonLog.SaveExceptionLog(ex, nameof(GetById), this.GetType().Name, ServiceType.API);
-                return Problem(APIMsg.ERR0004);
-            }
+            var email = _emails.GetById(id);
+            if (email == null) return NotFound();
+            return Ok(email);
         }
-
-        [Authorize]
-        [HttpPost("send")]
-        [RequisitionFilter]
-        public IActionResult Post([FromBody] CreateEmailModel createEmailModel)
+        catch (Exception ex)
         {
-            try
-            {
-                if (!ModelState.IsValid)
-                    return BadRequest(ModelState);
-
-                Email email = createEmailModel;
-                email.CreationUserId = email.UpdateUserId = (long)this.User.GetUserID();
-
-                _emails.Insert(email).Save();
-
-                ViewEmailModel viewEmailModel = email;
-
-                return CreatedAtAction(nameof(GetById), new { email.Id }, viewEmailModel);
-            }
-            catch (Exception ex)
-            {
-                _commonLog.SaveExceptionLog(ex, nameof(Post), this.GetType().Name, ServiceType.API);
-                return Problem(APIMsg.ERR0001);
-            }
+            _commonLog.SaveExceptionLog(ex, nameof(GetById), this.GetType().Name, ServiceType.API);
+            return Problem(APIMsg.ERR0004);
         }
+    }
 
-        [Authorize]
-        [HttpPatch("{id}")]
-        [RequisitionFilter]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ViewEmailModel))]
-        public IActionResult Patch([FromRoute] long id, UpdateEmailModel updateEmail)
+    [Authorize]
+    [HttpPost("send")]
+    [RequisitionFilter]
+    public IActionResult Post([FromBody] CreateEmailModel createEmailModel)
+    {
+        try
         {
-            try
-            {
-                if (updateEmail.IsNull())
-                    return BadRequest(new APIResult { Message = APIMsg.REQ0002 });
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
-                Email email = _emails.GetById(id);
+            Email email = createEmailModel;
+            email.CreationUserId = email.UpdateUserId = (long)this.User.GetUserID();
 
-                if (email == null) return NotFound(id);
+            _emails.Insert(email).Save();
 
-                if (email.Status.Equals(EmailStatus.Sent))
-                    return StatusCode(409, new APIResult { Message = APIMsg.ERR0005 });
+            ViewEmailModel viewEmailModel = email;
 
-                if (!updateEmail.SendDate.IsNull())
-                    email.SendDate = (DateTime)updateEmail.SendDate;
-
-                if (!updateEmail.Subject.IsNull())
-                    email.Subject = updateEmail.Subject;
-
-                if (!updateEmail.Body.IsNull())
-                    email.Body = updateEmail.Body;
-
-                email.UpdateUserId = (long)this.User.GetUserID();
-                _emails.Update(email).Save();
-
-                ViewEmailModel viewEmailModel = email;
-
-                return Ok(viewEmailModel);
-            }
-            catch (Exception ex)
-            {
-                _commonLog.SaveExceptionLog(ex, nameof(Patch), this.GetType().Name, ServiceType.API);
-                return Problem(APIMsg.ERR0004);
-            }
+            return CreatedAtAction(nameof(GetById), new { email.Id }, viewEmailModel);
         }
-
-        [HttpDelete("{id}")]
-        [RequisitionFilter]
-        [Authorize]
-        public IActionResult Delete(long id)
+        catch (Exception ex)
         {
-            try
-            {
-                Email email = _emails.GetById(id);
-                if (email == null) return NotFound();
-
-                if (email.Status.Equals(EmailStatus.Sent))
-                    return BadRequest(new APIResult { Message = APIMsg.ERR0007 });
-
-                email.DeletionDate = DateTime.Now;
-                email.UpdateUserId = (long)this.User.GetUserID();
-                _emails.Update(email).Save();
-                return NoContent();
-            }
-            catch (Exception ex)
-            {
-                _commonLog.SaveExceptionLog(ex, nameof(Delete), this.GetType().Name, ServiceType.API);
-                return Problem(APIMsg.ERR0004);
-            }
+            _commonLog.SaveExceptionLog(ex, nameof(Post), this.GetType().Name, ServiceType.API);
+            return Problem(APIMsg.ERR0001);
         }
+    }
 
-        [Authorize]
-        [HttpGet("drafts")]
-        [RequisitionFilter]
-        public IActionResult GetEmailsInDraft()
+    [Authorize]
+    [HttpPatch("{id}")]
+    [RequisitionFilter]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ViewEmailModel))]
+    public IActionResult Patch([FromRoute] long id, UpdateEmailModel updateEmail)
+    {
+        try
         {
-            try
-            {
-                List<Email> emails = _emails.GetEmailsByStatusAndUserId(EmailStatus.Draft, (long)this.User.GetUserID());
+            if (updateEmail.IsNull())
+                return BadRequest(new APIResult { Message = APIMsg.REQ0002 });
+
+            var email = _emails.GetById(id);
+
+            if (email == null) return NotFound(id);
+
+            if (email.Status.Equals(EmailStatus.Sent))
+                return StatusCode(409, new APIResult { Message = APIMsg.ERR0005 });
+
+            if (!updateEmail.SendDate.IsNull())
+                email.SendDate = (DateTime)updateEmail.SendDate!;
+
+            if (!updateEmail.Subject.IsNull())
+                email.Subject = updateEmail.Subject;
+
+            if (!updateEmail.Body.IsNull())
+                email.Body = updateEmail.Body;
+
+            email.UpdateUserId = (long)User.GetUserID();
+            _emails.Update(email).Save();
+
+            ViewEmailModel viewEmailModel = email;
+
+            return Ok(viewEmailModel);
+        }
+        catch (Exception ex)
+        {
+            _commonLog.SaveExceptionLog(ex, nameof(Patch), this.GetType().Name, ServiceType.API);
+            return Problem(APIMsg.ERR0004);
+        }
+    }
+
+    [HttpDelete("{id}")]
+    [RequisitionFilter]
+    [Authorize]
+    public IActionResult Delete(long id)
+    {
+        try
+        {
+            var email = _emails.GetById(id);
+            if (email == null) return NotFound();
+
+            if (email.Status.Equals(EmailStatus.Sent))
+                return BadRequest(new APIResult { Message = APIMsg.ERR0007 });
+
+            email.DeletionDate = DateTime.Now;
+            email.UpdateUserId = (long)this.User.GetUserID();
+            _emails.Update(email).Save();
+            return NoContent();
+        }
+        catch (Exception ex)
+        {
+            _commonLog.SaveExceptionLog(ex, nameof(Delete), this.GetType().Name, ServiceType.API);
+            return Problem(APIMsg.ERR0004);
+        }
+    }
+
+    [Authorize]
+    [HttpGet("drafts")]
+    [RequisitionFilter]
+    public IActionResult GetEmailsInDraft()
+    {
+        try
+        {
+            List<Email> emails = _emails.GetEmailsByStatusAndUserId(EmailStatus.Draft, (long)this.User.GetUserID());
             
-                if(emails.Count == 0)
-                    return NoContent();
+            if(emails.Count == 0)
+                return NoContent();
 
-                List<ViewEmailModel> viewEmailModels = emails.Select(email => (ViewEmailModel)email).ToList();
+            List<ViewEmailModel> viewEmailModels = emails.Select(email => (ViewEmailModel)email).ToList();
 
-                return Ok(new ListEmailModel { Count = viewEmailModels.Count, Emails = viewEmailModels});
-            }
-            catch (Exception ex)
-            {
-                _commonLog.SaveExceptionLog(ex, nameof(GetEmailsInDraft), this.GetType().Name, ServiceType.API);
-                return Problem(APIMsg.ERR0004);
-            }
+            return Ok(new ListEmailModel { Count = viewEmailModels.Count, Emails = viewEmailModels});
+        }
+        catch (Exception ex)
+        {
+            _commonLog.SaveExceptionLog(ex, nameof(GetEmailsInDraft), this.GetType().Name, ServiceType.API);
+            return Problem(APIMsg.ERR0004);
         }
     }
 }

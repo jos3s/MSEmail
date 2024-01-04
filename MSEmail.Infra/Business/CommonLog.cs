@@ -3,40 +3,39 @@ using MsEmail.Infra.Context;
 using MSEmail.Domain.Enums;
 using MSEmail.Infra.Repository;
 
-namespace MSEmail.Infra.Business
+namespace MSEmail.Infra.Business;
+
+public class CommonLog
 {
-    public class CommonLog
+    private AppDbContext _context { get; set; }
+    private ExceptionLogRepository _logs { get; set; }
+
+    public CommonLog(AppDbContext context)
     {
-        private AppDbContext _context { get; set; }
-        private ExceptionLogRepository _logs { get; set; }
+        _logs = new ExceptionLogRepository(context);
+    }
 
-        public CommonLog(AppDbContext context)
+    public void SaveExceptionLog(Exception ex, string method, string className, ServiceType serviceType, bool uniqueTransaction = true)
+    {
+        try
         {
-            _logs = new ExceptionLogRepository(context);
+            ExceptionLog log = new ExceptionLog
+            {
+                Source = ex.Source,
+                StackTrace = ex.StackTrace,
+                Message = ex.Message.ToString(),
+                MethodName = method,
+                ClassName = className,
+                ServiceType = serviceType
+            };
+            _logs.Insert(log);
+
+            if (uniqueTransaction)
+                _logs.Save();
         }
-
-        public void SaveExceptionLog(Exception ex, string method, string className, ServiceType serviceType, bool uniqueTransaction = true)
+        catch (Exception)
         {
-            try
-            {
-                ExceptionLog log = new ExceptionLog
-                {
-                    Source = ex.Source,
-                    StackTrace = ex.StackTrace,
-                    Message = ex.Message.ToString(),
-                    MethodName = method,
-                    ClassName = className,
-                    ServiceType = serviceType
-                };
-                _logs.Insert(log);
 
-                if (uniqueTransaction)
-                    _logs.Save();
-            }
-            catch (Exception)
-            {
-
-            }
         }
     }
 }

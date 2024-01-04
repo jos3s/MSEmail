@@ -12,46 +12,45 @@ using MSEmail.Infra.Business;
 using MSEmail.Infra.Repository;
 using MSEmail.Infra.Services;
 
-namespace MsEmail.API.Controllers
+namespace MsEmail.API.Controllers;
+
+[ApiController]
+[Route("api/[controller]")]
+public class LoginController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class LoginController : ControllerBase
+    private readonly UserRepository _users;
+    private readonly CommonLog _commonLog;
+
+    public LoginController(AppDbContext context)
     {
-        private readonly UserRepository _users;
-        private readonly CommonLog _commonLog;
-
-        public LoginController(AppDbContext context)
+        _users = new UserRepository(context);
+        _commonLog = new CommonLog(context);
+    }
+    
+    [HttpPost]
+    [RequisitionFilter]
+    [AllowAnonymous]
+    [ProducesResponseType(StatusCodes.Status200OK, Type= typeof(ViewTokenModel))]
+    public IActionResult Authenticate(LoginUserModel login)
+    {
+        try
         {
-            _users = new UserRepository(context);
-            _commonLog = new CommonLog(context);
-        }
-        
-        [HttpPost]
-        [RequisitionFilter]
-        [AllowAnonymous]
-        [ProducesResponseType(StatusCodes.Status200OK, Type= typeof(ViewTokenModel))]
-        public IActionResult Authenticate(LoginUserModel login)
+            User user = _users.GetByLogin(login.Email);
+
+            if (user == null)
+                return BadRequest(new APIResult{ Message = APIMsg.ERR0002 });
+
+            if (!user.Password.Equals(login.Password.Hashing()))
+                return BadRequest(new APIResult{ Message = APIMsg.ERR0003 });
+
+            var token = TokenServices.GenerateToken(user);
+
+            return Ok(new ViewTokenModel { Email = user.Email, Token = token});
+        } 
+        catch (Exception ex)
         {
-            try
-            {
-                User user = _users.GetByLogin(login.Email);
-
-                if (user == null)
-                    return BadRequest(new APIResult{ Message = APIMsg.ERR0002 });
-
-                if (!user.Password.Hashing().Equals(login.Password.Hashing()))
-                    return BadRequest(new APIResult{ Message = APIMsg.ERR0003 });
-
-                var token = TokenServices.GenerateToken(user);
-
-                return Ok(new ViewTokenModel { Email = user.Email, Token = token});
-            } 
-            catch (Exception ex)
-            {
-                _commonLog.SaveExceptionLog(ex, nameof(Authenticate), this.GetType().Name, ServiceType.API);
-                return Problem(APIMsg.ERR0004);
-            }
+            _commonLog.SaveExceptionLog(ex, nameof(Authenticate), this.GetType().Name, ServiceType.API);
+            return Problem(APIMsg.ERR0004);
         }
     }
 }

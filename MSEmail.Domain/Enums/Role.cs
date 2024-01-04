@@ -1,8 +1,7 @@
-﻿namespace MSEmail.Domain.Enums
+﻿namespace MSEmail.Domain.Enums;
+
+public enum Role
 {
-    public enum Role
-    {
-        Admin,
-        User
-    }
+    Admin,
+    User
 }

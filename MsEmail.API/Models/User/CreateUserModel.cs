@@ -1,28 +1,26 @@
-﻿using MsEmail.Domain.Entities;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace MsEmail.API.Models.UserModels
+namespace MSEmail.API.Models.User;
+
+public class CreateUserModel
 {
-    public class CreateUserModel
+    private string _email;
+
+    [Required]
+    public string Email
     {
-        private string _email;
+        get => _email.ToLower();
+        set => _email = value;
+    }
 
-        [Required]
-        public string Email
+    [Required]
+    public string Password { get; set; }
+
+    public static implicit operator MsEmail.Domain.Entities.User(CreateUserModel createUser) {
+        return new MsEmail.Domain.Entities.User
         {
-            get => _email.ToLower();
-            set => _email = value;
-        }
-
-        [Required]
-        public string Password { get; set; }
-
-        public static implicit operator User(CreateUserModel createUser) {
-            return new User
-            {
-                Email = createUser.Email,
-                Password = createUser.Password.Hashing(),
-            };
-        }
+            Email = createUser.Email,
+            Password = createUser.Password.Hashing(),
+        };
     }
 }

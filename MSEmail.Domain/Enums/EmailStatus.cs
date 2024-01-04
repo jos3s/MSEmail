@@ -1,11 +1,10 @@
-﻿namespace MSEmail.Domain.Enums
+﻿namespace MSEmail.Domain.Enums;
+
+public enum EmailStatus
 {
-    public enum EmailStatus
-    {
-        Created,
-        Sent,
-        Error,
-        Draft,
-        PreSend
-    }
+    Created,
+    Sent,
+    Error,
+    Draft,
+    PreSend
 }

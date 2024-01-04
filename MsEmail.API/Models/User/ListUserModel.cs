@@ -1,10 +1,8 @@
-﻿using MsEmail.API.Models.UserModels;
-using MSEmail.API.Models.Base;
+﻿using MSEmail.API.Models.Base;
 
-namespace MSEmail.API.Models.User
+namespace MSEmail.API.Models.User;
+
+public class ListUserModel : BaseListModel
 {
-    public class ListUserModel : BaseListModel
-    {
-        public List<ViewUserModel> Users { get; set; }
-    }
+    public List<ViewUserModel> Users { get; set; }
 }
