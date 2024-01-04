@@ -22,8 +22,7 @@ O projeto foi criado com a inteção de seguir o padrão de Clean Architecture, 
 * MS PrepareEmail
 * MS SendEmail
 
-![fluxo](https://github.com/jos3s/MSEmail/assets/50359547/5a7641ab-ec01-4a00-aa18-efebaca7bc20)
-
+![fluxo](https://github.com/jos3s/MSEmail/assets/50359547/75dc6d04-537c-433f-a103-694fbf64bfb1)
 
 ## Como executar
 
@@ -87,7 +86,6 @@ API
 dotnet run --project .\MsEmail.Api
 ```
 
-
 MSEmail.PrepareEmail
 ```bash
 dotnet run --project .\MsEmail.PrepareEmail
@@ -98,9 +96,7 @@ MSEmail.Send
 dotnet run --project .\MsEmail.Send
 ```
 
-
 ## Endpoints
 
 Ao rodar pelo Visual Studio, vai abrir a interface do swagger com todos os endpoints e schemas da api.
 ![msemailapi](https://github.com/jos3s/MSEmail/assets/50359547/dd4f922e-5c03-4208-9644-e620b81ec7ed)
-
