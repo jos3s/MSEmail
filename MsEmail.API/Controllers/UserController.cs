@@ -69,7 +69,7 @@ public class UserController : ControllerBase
         catch (Exception ex)
         {
             _commonLog.SaveExceptionLog(ex, nameof(GetAllUsers), this.GetType().Name, ServiceType.API);
-            return Problem(APIMsg.ERR0004);
+            return StatusCode(500, new ApiResult<string>(APIMsg.ERR0004));
         }
     }
 }

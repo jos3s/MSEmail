@@ -47,7 +47,7 @@ public class EmailController : ControllerBase
         catch (Exception ex)
         {
             _commonLog.SaveExceptionLog(ex, nameof(GetAll), this.GetType().Name, ServiceType.API);
-            return Problem(APIMsg.ERR0004);
+            return StatusCode(500, new ApiResult<string>(APIMsg.ERR0004));
         }
     }
 
@@ -66,7 +66,7 @@ public class EmailController : ControllerBase
         catch (Exception ex)
         {
             _commonLog.SaveExceptionLog(ex, nameof(GetById), this.GetType().Name, ServiceType.API);
-            return Problem(APIMsg.ERR0004);
+            return StatusCode(500, new ApiResult<string>(APIMsg.ERR0004));
         }
     }
 
@@ -92,7 +92,7 @@ public class EmailController : ControllerBase
         catch (Exception ex)
         {
             _commonLog.SaveExceptionLog(ex, nameof(Post), this.GetType().Name, ServiceType.API);
-            return Problem(APIMsg.ERR0001);
+            return StatusCode(500, new ApiResult<string>(APIMsg.ERR0001));
         }
     }
 
@@ -133,7 +133,7 @@ public class EmailController : ControllerBase
         catch (Exception ex)
         {
             _commonLog.SaveExceptionLog(ex, nameof(Patch), this.GetType().Name, ServiceType.API);
-            return Problem(APIMsg.ERR0004);
+            return StatusCode(500, new ApiResult<string>(APIMsg.ERR0004));
         }
     }
 
@@ -159,7 +159,7 @@ public class EmailController : ControllerBase
         catch (Exception ex)
         {
             _commonLog.SaveExceptionLog(ex, nameof(Delete), this.GetType().Name, ServiceType.API);
-            return Problem(APIMsg.ERR0004);
+            return StatusCode(500, new ApiResult<string>(APIMsg.ERR0004));
         }
     }
 
@@ -183,7 +183,7 @@ public class EmailController : ControllerBase
         catch (Exception ex)
         {
             _commonLog.SaveExceptionLog(ex, nameof(GetEmailsInDraft), this.GetType().Name, ServiceType.API);
-            return Problem(APIMsg.ERR0004);
+            return StatusCode(500, new ApiResult<string>(APIMsg.ERR0004));
         }
     }
 }
