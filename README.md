@@ -1,6 +1,6 @@
 # Email
 
-Esse é um projeto de estudos que apresenta uma API para envio de emails, além de dois microserviços responsáveis pelo preparo do email e pelo envio do email por meio da tecnologia SMTP do Google.
+Esse Ã© um projeto de estudos que apresenta uma API para envio de emails, alÃ©m de dois microserviÃ§os responsÃ¡veis pelo preparo do email e pelo envio do email por meio da tecnologia SMTP do Google.
 
 ## Tecnologias
 
@@ -13,7 +13,7 @@ Esse é um projeto de estudos que apresenta uma API para envio de emails, além de
 
 ## Arquitetura e escolhas
 
-O projeto foi criado com a inteção de seguir o padrão de Clean Architecture, com as camadas:
+O projeto foi criado com a inteÃ§Ã£o de seguir o padrÃ£o de Clean Architecture, com as camadas:
  
 * Common
 * Domain
@@ -22,11 +22,11 @@ O projeto foi criado com a inteção de seguir o padrão de Clean Architecture, com
 * MS PrepareEmail
 * MS SendEmail
 
-
+![fluxo](https://github.com/jos3s/MSEmail/assets/50359547/75dc6d04-537c-433f-a103-694fbf64bfb1)
 
 ## Como executar
 
-### Primeiro baixe o repositório
+### Primeiro baixe o repositÃ³rio
 
 ```bash
 git clone https://github.com/jos3s/MSEmail/
@@ -61,7 +61,7 @@ No projeto da API configure um valor para **TokenSecret**
 ```
 
 
-No MSEmail.Send é preciso fazer uma configuração a mais, pois para o envio do email é necessário configurar qual email vai ser utilizado como redirecionamento. Para isso pode usar o texto de suporte do google  [aqui](https://support.google.com/accounts/answer/185833).
+No MSEmail.Send Ã© preciso fazer uma configuraÃ§Ã£o a mais, pois para o envio do email Ã© necessÃ¡rio configurar qual email vai ser utilizado como redirecionamento. Para isso pode usar o texto de suporte do google  [aqui](https://support.google.com/accounts/answer/185833).
 
 ```json
 {
@@ -76,8 +76,6 @@ No MSEmail.Send é preciso fazer uma configuração a mais, pois para o envio do em
 
 ```
 
-
-
 ### Para rodar os projetos
 
 Para rodar os projetos execute os seguintes comandos no terminal ou execute-os pelo Visual Studio:
@@ -87,7 +85,6 @@ API
 ```bash
 dotnet run --project .\MsEmail.Api
 ```
-
 
 MSEmail.PrepareEmail
 ```bash
@@ -99,7 +96,7 @@ MSEmail.Send
 dotnet run --project .\MsEmail.Send
 ```
 
-
 ## Endpoints
 
 Ao rodar pelo Visual Studio, vai abrir a interface do swagger com todos os endpoints e schemas da api.
+![msemailapi](https://github.com/jos3s/MSEmail/assets/50359547/dd4f922e-5c03-4208-9644-e620b81ec7ed)
