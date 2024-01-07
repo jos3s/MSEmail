@@ -23,5 +23,4 @@ public class ApiResult<T>
     {
         Data = data;
     }
-
 }

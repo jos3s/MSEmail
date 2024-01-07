@@ -50,7 +50,7 @@ public class LoginController : ControllerBase
         catch (Exception ex)
         {
             _commonLog.SaveExceptionLog(ex, nameof(Authenticate), this.GetType().Name, ServiceType.API);
-            return Problem(APIMsg.ERR0004);
+            return StatusCode(500, new ApiResult<string>(APIMsg.ERR0004));
         }
     }
 }
