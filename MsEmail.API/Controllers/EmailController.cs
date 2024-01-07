@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MsEmail.API.Filters;
+using MSEmail.API.Messages;
 using MsEmail.API.Models;
 using MsEmail.API.Models.EmailModel;
 using MsEmail.Domain.Entities;
 using MsEmail.Infra.Context;
 using MSEmail.API.Models.Email;
-using MSEmail.Common;
 using MSEmail.Domain.Enums;
 using MSEmail.Infra.Business;
 using MSEmail.Infra.Repository;
@@ -30,7 +30,7 @@ public class EmailController : ControllerBase
     [HttpGet]
     [RequisitionFilter]
     [Authorize]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<Email>))]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiResult<List<Email>>))]
     public IActionResult GetAll(bool withDeletionDate)
     {
         try
@@ -42,7 +42,7 @@ public class EmailController : ControllerBase
 
             List<ViewEmailModel> viewEmailModels = emails.Select(e => (ViewEmailModel)e).ToList();
 
-            return Ok(new ListEmailModel{ Count = emails.Count(), Emails = viewEmailModels });
+            return Ok(new ApiResult<ListEmailModel>(new ListEmailModel { Count = emails.Count(), Emails = viewEmailModels }));
         }
         catch (Exception ex)
         {
@@ -54,14 +54,14 @@ public class EmailController : ControllerBase
     [HttpGet("{id}")]
     [RequisitionFilter]
     [Authorize]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Email))]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiResult<Email>))]
     public IActionResult GetById(long id)
     {
         try
         {
             var email = _emails.GetById(id);
             if (email == null) return NotFound();
-            return Ok(email);
+            return Ok(new ApiResult<Email>(email));
         }
         catch (Exception ex)
         {
@@ -99,20 +99,20 @@ public class EmailController : ControllerBase
     [Authorize]
     [HttpPatch("{id}")]
     [RequisitionFilter]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ViewEmailModel))]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiResult<ViewEmailModel>))]
     public IActionResult Patch([FromRoute] long id, UpdateEmailModel updateEmail)
     {
         try
         {
             if (updateEmail.IsNull())
-                return BadRequest(new APIResult { Message = APIMsg.REQ0002 });
+                return BadRequest(new ApiResult<string>(APIMsg.REQ0002));
 
             var email = _emails.GetById(id);
 
             if (email == null) return NotFound(id);
 
             if (email.Status.Equals(EmailStatus.Sent))
-                return StatusCode(409, new APIResult { Message = APIMsg.ERR0005 });
+                return StatusCode(409, new ApiResult<string> (APIMsg.ERR0005));
 
             if (!updateEmail.SendDate.IsNull())
                 email.SendDate = (DateTime)updateEmail.SendDate!;
@@ -128,7 +128,7 @@ public class EmailController : ControllerBase
 
             ViewEmailModel viewEmailModel = email;
 
-            return Ok(viewEmailModel);
+            return Ok(new ApiResult<ViewEmailModel>(viewEmailModel));
         }
         catch (Exception ex)
         {
@@ -140,6 +140,7 @@ public class EmailController : ControllerBase
     [HttpDelete("{id}")]
     [RequisitionFilter]
     [Authorize]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(NoContentResult))]
     public IActionResult Delete(long id)
     {
         try
@@ -148,7 +149,7 @@ public class EmailController : ControllerBase
             if (email == null) return NotFound();
 
             if (email.Status.Equals(EmailStatus.Sent))
-                return BadRequest(new APIResult { Message = APIMsg.ERR0007 });
+                return BadRequest(new ApiResult<string> (APIMsg.ERR0007));
 
             email.DeletionDate = DateTime.Now;
             email.UpdateUserId = (long)this.User.GetUserID();
@@ -165,6 +166,7 @@ public class EmailController : ControllerBase
     [Authorize]
     [HttpGet("drafts")]
     [RequisitionFilter]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiResult<ListEmailModel>))]
     public IActionResult GetEmailsInDraft()
     {
         try
@@ -176,7 +178,7 @@ public class EmailController : ControllerBase
 
             List<ViewEmailModel> viewEmailModels = emails.Select(email => (ViewEmailModel)email).ToList();
 
-            return Ok(new ListEmailModel { Count = viewEmailModels.Count, Emails = viewEmailModels});
+            return Ok(new ApiResult<ListEmailModel>(new ListEmailModel { Count = viewEmailModels.Count, Emails = viewEmailModels }));
         }
         catch (Exception ex)
         {

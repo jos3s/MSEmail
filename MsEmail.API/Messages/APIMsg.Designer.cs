@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MSEmail.Common {
+namespace MSEmail.API.Messages {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace MSEmail.Common {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("MSEmail.Common.APIMsg", typeof(APIMsg).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("MSEmail.API.Messages.APIMsg", typeof(APIMsg).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

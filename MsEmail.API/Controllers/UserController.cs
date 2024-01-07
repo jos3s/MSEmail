@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MsEmail.API.Filters;
+using MSEmail.API.Messages;
 using MsEmail.API.Models;
 using MsEmail.Domain.Entities;
 using MsEmail.Infra.Context;
 using MSEmail.API.Models.User;
-using MSEmail.Common;
 using MSEmail.Domain.Enums;
 using MSEmail.Infra.Business;
 using MSEmail.Infra.Repository;
@@ -28,7 +28,7 @@ public class UserController : ControllerBase
 
     [HttpPost]
     [RequisitionFilter]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ViewUserModel))]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiResult<ViewUserModel>))]
     public IActionResult Create([FromBody] CreateUserModel createUserModel)
     {
         try
@@ -38,13 +38,13 @@ public class UserController : ControllerBase
 
             User existentUser = _users.GetByLogin(createUserModel.Email);
             if (createUserModel.Email.Equals(existentUser?.Email))
-                return BadRequest(new APIResult { Message = APIMsg.ERR0006 });
+                return BadRequest(new ApiResult<string>(APIMsg.ERR0006));
 
             User user = createUserModel;
             _users.Insert(user).Save();
             ViewUserModel viewUserModel = user;
 
-            return Ok(viewUserModel);
+            return Ok(new ApiResult<ViewUserModel>(viewUserModel));
         }
         catch (Exception ex)
         {
@@ -56,7 +56,7 @@ public class UserController : ControllerBase
     [HttpGet("all")]
     [RequisitionFilter]
     [Authorize(Roles = "admin")]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<ViewUserModel>))]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiResult<List<ViewUserModel>>))]
     public IActionResult GetAllUsers()
     {
         try
@@ -64,7 +64,7 @@ public class UserController : ControllerBase
             List<User> user = _users.GetAll();
             List<ViewUserModel> viewUsers = user.Select(user => (ViewUserModel)user).ToList();
                 
-            return Ok(new ListUserModel { Count = viewUsers.Count, Users = viewUsers});
+            return Ok(new ApiResult<ListUserModel>(new ListUserModel { Count = viewUsers.Count, Users = viewUsers }));
         }
         catch (Exception ex)
         {

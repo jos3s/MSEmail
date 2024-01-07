@@ -10,8 +10,12 @@ public class DateValidAttribute : ValidationAttribute
     protected override ValidationResult? IsValid(
         object? value, ValidationContext validationContext)
     {
-        var sendDate = (DateTime)value;
+        var date = value ?? null;
 
+        if (date.IsNull())
+            return ValidationResult.Success;
+
+        var sendDate = (DateTime)date;
         if (!sendDate.IsNull() && sendDate.Date < DateTime.Now.Date)
         {
             return new ValidationResult(GetErrorMessage());
