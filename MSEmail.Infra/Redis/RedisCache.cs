@@ -1,12 +1,11 @@
 ﻿using StackExchange.Redis;
-
 using System.Text.Json;
-using NRedisStack.RedisStackCommands;
 
 namespace MSEmail.Infra.Redis;
+
 public class RedisCache
 {
-    public static IDatabase _db { get; set; } = RedisSingleton.Instance;
+    public static IDatabase _db { get; set; } = RedisProvider.Instance.ConfigureDatabase();
 
     public static T? GetValue<T>(string key)
     {
@@ -14,7 +13,7 @@ public class RedisCache
 
         if (string.IsNullOrEmpty(value))
             return default(T);
-        return JsonSerializer.Deserialize<T>(value) ?? default(T);
+        return JsonSerializer.Deserialize<T>(value!) ?? default(T);
     }
 
     public static void SetValue<T>(string key, T value, int minutes = 60)
