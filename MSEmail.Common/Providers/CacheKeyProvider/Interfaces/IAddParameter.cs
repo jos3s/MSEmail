@@ -1,4 +1,4 @@
-﻿namespace MSEmail.Infra.Redis.CacheKeyProviders.CacheKeyProvider.Interfaces;
+﻿namespace MSEmail.Common.Providers.CacheKeyProvider.Interfaces;
 
 public interface IAddParameter
 {

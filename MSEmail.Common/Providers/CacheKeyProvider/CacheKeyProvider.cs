@@ -1,8 +1,9 @@
 ﻿using System.Text;
-using MSEmail.Infra.Redis.CacheKeyProviders.CacheKeyProvider.Interfaces;
+using MSEmail.Common.Providers.CacheKeyProvider.Interfaces;
 
-namespace MSEmail.Infra.Redis.CacheKeyProviders.CacheKeyGenerator;
-public class CacheKeyProvider<T> : INew, IAddParameter, IGenerateKey
+namespace MSEmail.Common.Providers.CacheKeyProvider;
+
+public class CacheKeyProvider<T> :INew, IAddParameter, IGenerateKey
 {
     protected Dictionary<string, string> _parameters { get; set; } = new Dictionary<string, string>();
 
