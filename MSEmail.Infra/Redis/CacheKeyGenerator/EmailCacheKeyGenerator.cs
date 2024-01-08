@@ -1,7 +1,6 @@
-﻿using MSEmail.Common.Providers.CacheKeyProvider;
-using MsEmail.Domain.Entities;
+﻿using MsEmail.Domain.Entities;
+using MSEmail.Common.Providers.CacheKeyProvider;
 using MSEmail.Domain.Enums;
-using MSEmail.Infra.Redis.CacheKey;
 
 namespace MSEmail.Infra.Redis.CacheKeyGenerator;
 

@@ -5,8 +5,8 @@ using MSEmail.Common.Utils;
 using MSEmail.Domain.Enums;
 using MSEmail.Domain.Interfaces;
 using MSEmail.Infra.Redis;
-using MSEmail.Infra.Redis.CacheKeyGenerator;
 using System.Linq.Expressions;
+using MSEmail.Infra.Redis.CacheKeyGenerator;
 
 namespace MSEmail.Infra.Repository;
 
