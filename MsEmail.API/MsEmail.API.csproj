@@ -21,6 +21,7 @@
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.16" />
+		<PackageReference Include="NRedisStack" Version="0.11.0" />
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
 	</ItemGroup>
 
@@ -28,6 +29,22 @@
 	  <ProjectReference Include="..\MSEmail.Common\MSEmail.Common.csproj" />
 	  <ProjectReference Include="..\MSEmail.Domain\MSEmail.Domain.csproj" />
 	  <ProjectReference Include="..\MSEmail.Infra\MSEmail.Infra.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Update="Messages\APIMsg.Designer.cs">
+	    <DependentUpon>APIMsg.resx</DependentUpon>
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Update="Messages\APIMsg.resx">
+	    <SubType>Designer</SubType>
+	    <LastGenOutput>APIMsg.Designer.cs</LastGenOutput>
+	    <Generator>PublicResXFileCodeGenerator</Generator>
+	  </EmbeddedResource>
 	</ItemGroup>
 
 </Project>

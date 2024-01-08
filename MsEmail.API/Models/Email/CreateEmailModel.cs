@@ -1,5 +1,5 @@
-﻿using MSEmail.API.Validations;
-using MSEmail.Common.Messages;
+﻿using MSEmail.API.Messages;
+using MSEmail.API.Validations;
 using System.ComponentModel.DataAnnotations;
 
 namespace MsEmail.API.Models.EmailModel

@@ -158,4 +158,50 @@ public class ConfigHelper
             }
         }
     }
+    public static string RedisConnection
+    {
+        get
+        {
+            try
+            {
+                return GetConfiguration("RedisUrl");
+            }
+            catch (Exception)
+            {
+                return string.Empty;
+            }
+        }
+    }
+
+    public static bool UseCache
+    {
+        get
+        {
+            var value = false;
+            try
+            {
+                bool.TryParse(GetConfiguration("UseCache"), out value);
+                return value;
+            }
+            catch (Exception)
+            {
+                return value;
+            }
+        }
+    }
+
+    public static string? RedisPassword
+    {
+        get
+        {
+            try
+            {
+                return GetConfiguration("RedisPassword");
+            }
+            catch (Exception)
+            {
+                return string.Empty;
+            }
+        }
+    }
 }

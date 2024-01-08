@@ -12,17 +12,17 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="APIMsg.Designer.cs">
+    <Compile Update="Messages\TokenMsg.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>APIMsg.resx</DependentUpon>
+      <DependentUpon>TokenMsg.resx</DependentUpon>
     </Compile>
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="APIMsg.resx">
+    <EmbeddedResource Update="Messages\TokenMsg.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>APIMsg.Designer.cs</LastGenOutput>
+      <LastGenOutput>TokenMsg.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
 
