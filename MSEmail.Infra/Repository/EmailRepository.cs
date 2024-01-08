@@ -76,11 +76,9 @@ public class EmailRepository : IRepository<Email>, IResetCache
     {
         if (ConfigHelper.UseCache)
         {
-            Email? email;
-
             var key = new EmailCacheKeyGenerator().GenerateKeyById(id);
 
-            email = RedisCache.GetValue<Email>(key);
+            var email = RedisCache.GetValue<Email>(key);
 
             if (email.IsNull())
             {
@@ -109,20 +107,20 @@ public class EmailRepository : IRepository<Email>, IResetCache
     {
         if (ConfigHelper.UseCache)
         {
-            List<Email> email = new();
+            List<Email> emails = new();
 
             var key = new EmailCacheKeyGenerator().GenerateKeyByStatus(status);
 
-            email = RedisCache.GetValue<List<Email>>(key);
+            emails = RedisCache.GetValue<List<Email>>(key);
 
-            if (email.IsNull())
+            if (emails.IsNull())
             {
-                email = _context.Emails.AsNoTracking().Where(x => x.Status.Equals(status)).ToList();
-                if (!email.IsNull())
-                    RedisCache.SetValue(key, email);
+                emails = _context.Emails.AsNoTracking().Where(x => x.Status.Equals(status)).ToList();
+                if (!emails.IsNull())
+                    RedisCache.SetValue(key, emails);
             }
 
-            return email;
+            return emails ?? new List<Email>();
         }
 
         return _context.Emails.AsNoTracking().Where(x => x.Status.Equals(status)).ToList();
@@ -154,10 +152,10 @@ public class EmailRepository : IRepository<Email>, IResetCache
             {
                 emails = _context.Emails.AsNoTracking().Where(x => x.Status.Equals(status) && x.CreationUserId == userId).ToList();
                 if (!emails.IsNull())
-                    RedisCache.SetValue(key, emails);
+                    RedisCache.SetValue(key, emails, 48*60);
             }
 
-            return emails;
+            return emails ?? new List<Email>();
         }
         return _context.Emails.AsNoTracking().Where(x => x.Status.Equals(status) && x.CreationUserId == userId).ToList();
     }
