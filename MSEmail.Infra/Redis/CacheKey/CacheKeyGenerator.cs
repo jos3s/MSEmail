@@ -1,9 +1,8 @@
-﻿using MsEmail.Domain.Entities;
-
-using MSEmail.Infra.Redis.CacheKeyProviders.CacheKeyGenerator;
+﻿using MSEmail.Common.Providers.CacheKeyProvider;
+using MsEmail.Domain.Entities.Common;
 
 namespace MSEmail.Infra.Redis.CacheKey;
-public class CacheKeyGenerator<T> 
+public class CacheKeyGenerator<T> where T : BaseEntity
 {
     public static string GenerateKeyByUserId(long userId)
     {
