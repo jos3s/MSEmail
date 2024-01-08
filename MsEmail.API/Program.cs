@@ -77,7 +77,6 @@ var app = builder.Build();
 
 ConfigurationAppSettings.ConfigureSettings(app.Configuration);
 
-RedisSingleton.ConfigureInstance(new RedisConfiguration().Database());
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
