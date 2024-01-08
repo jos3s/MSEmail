@@ -4,6 +4,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using MsEmail.Infra.Context;
 using MSEmail.Common.Utils;
+using MSEmail.Infra.Redis;
 using System.Text;
 
 namespace MsEmail.API
@@ -76,6 +77,7 @@ namespace MsEmail.API
 
             ConfigurationAppSettings.ConfigureSettings(app.Configuration);
 
+RedisSingleton.ConfigureInstance(new RedisConfiguration().Database());
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
@@ -91,6 +93,3 @@ namespace MsEmail.API
             app.MapControllers();
 
             app.Run();
-        }
-    }
-}
