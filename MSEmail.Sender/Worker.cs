@@ -1,4 +1,6 @@
 using MsEmail.Infra.Context;
+
+using MSEmail.Infra.Log;
 using MSEmail.Sender.Transaction;
 
 namespace MSEmail.Sender;
@@ -23,6 +25,8 @@ public class Worker : BackgroundService
             var services = scope.ServiceProvider;
             AppDbContext _context = services.GetService<AppDbContext>();
             new ExecuteTRA(_context).Execute();
+
+            LogSingleton.Instance.CreateInformationLog($"{nameof(Worker)}.{nameof(ExecuteAsync)}", "", Domain.Enums.ServiceType.MSSender);
         }
     }
 }

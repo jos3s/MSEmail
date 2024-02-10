@@ -1,5 +1,6 @@
 using MsEmail.Infra.Context;
 using MSEmail.Common.Utils;
+using MSEmail.Infra.Log;
 using MSEmail.PrepareEmail.Transaction;
 
 namespace MSEmail.PrepareEmail;
@@ -31,6 +32,8 @@ public class WorkerDraftEmail : BackgroundService
 
                 new ExecuteTRA(_context).Execute(Domain.Enums.EmailStatus.Draft);
                 await Task.Delay(TimeSpan.FromMinutes(ConfigHelper.ServiceInterval), stoppingToken);
+
+                LogSingleton.Instance.CreateInformationLog($"{nameof(WorkerDraftEmail)}.{nameof(ExecuteAsync)}", "", Domain.Enums.ServiceType.MSSender);
             }
         }
     }
