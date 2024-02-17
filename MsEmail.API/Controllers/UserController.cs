@@ -29,7 +29,7 @@ public class UserController : ControllerBase
     [HttpPost]
     [RequisitionFilter]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiResult<ViewUserModel>))]
-    public IActionResult Create([FromBody] CreateUserModel createUserModel)
+    public async Task<IActionResult> Create([FromBody] CreateUserModel createUserModel)
     {
         try
         {
@@ -57,7 +57,7 @@ public class UserController : ControllerBase
     [RequisitionFilter]
     [Authorize(Roles = "admin")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiResult<List<ViewUserModel>>))]
-    public IActionResult GetAllUsers()
+    public async Task<IActionResult> GetAllUsers()
     {
         try
         {
