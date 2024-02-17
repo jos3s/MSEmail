@@ -11,12 +11,11 @@ using MSEmail.Domain.Enums;
 using MSEmail.Infra.Business;
 using MSEmail.Infra.Repository;
 using MSEmail.Infra.Services;
+using MSEmail.API.Controllers.Base;
 
 namespace MsEmail.API.Controllers;
 
-[ApiController]
-[Route("api/[controller]")]
-public class LoginController : ControllerBase
+public class LoginController : BaseController
 {
     private readonly UserRepository _users;
     private readonly CommonLog _commonLog;

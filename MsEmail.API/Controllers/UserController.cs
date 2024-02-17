@@ -9,12 +9,11 @@ using MSEmail.API.Models.User;
 using MSEmail.Domain.Enums;
 using MSEmail.Infra.Business;
 using MSEmail.Infra.Repository;
+using MSEmail.API.Controllers.Base;
 
 namespace MSEmail.API.Controllers;
 
-[ApiController]
-[Route("api/[controller]")]
-public class UserController : ControllerBase
+public class UserController : BaseController
 {
 
     private readonly UserRepository _users;
