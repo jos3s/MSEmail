@@ -31,7 +31,7 @@ public class EmailController : ControllerBase
     [RequisitionFilter]
     [Authorize]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiResult<List<Email>>))]
-    public IActionResult GetAll(bool withDeletionDate)
+    public async Task<IActionResult> GetAll(bool withDeletionDate)
     {
         try
         {
@@ -55,7 +55,7 @@ public class EmailController : ControllerBase
     [RequisitionFilter]
     [Authorize]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiResult<Email>))]
-    public IActionResult GetById(long id)
+    public async Task<IActionResult> GetById(long id)
     {
         try
         {
@@ -73,7 +73,7 @@ public class EmailController : ControllerBase
     [Authorize]
     [HttpPost("send")]
     [RequisitionFilter]
-    public IActionResult Post([FromBody] CreateEmailModel createEmailModel)
+    public async Task<IActionResult> Post([FromBody] CreateEmailModel createEmailModel)
     {
         try
         {
@@ -100,7 +100,7 @@ public class EmailController : ControllerBase
     [HttpPatch("{id}")]
     [RequisitionFilter]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiResult<ViewEmailModel>))]
-    public IActionResult Patch([FromRoute] long id, UpdateEmailModel updateEmail)
+    public async Task<IActionResult> Patch([FromRoute] long id, UpdateEmailModel updateEmail)
     {
         try
         {
@@ -141,7 +141,7 @@ public class EmailController : ControllerBase
     [RequisitionFilter]
     [Authorize]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(NoContentResult))]
-    public IActionResult Delete(long id)
+    public async Task<IActionResult> Delete(long id)
     {
         try
         {
@@ -167,7 +167,7 @@ public class EmailController : ControllerBase
     [HttpGet("drafts")]
     [RequisitionFilter]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiResult<ListEmailModel>))]
-    public IActionResult GetEmailsInDraft()
+    public async Task<IActionResult> GetEmailsInDraft()
     {
         try
         {

@@ -31,7 +31,7 @@ public class LoginController : ControllerBase
     [RequisitionFilter]
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK, Type= typeof(ApiResult<ViewTokenModel>))]
-    public IActionResult Authenticate(LoginUserModel login)
+    public async Task<IActionResult> Authenticate(LoginUserModel login)
     {
         try
         {
