@@ -10,13 +10,12 @@ using MSEmail.API.Models.Email;
 using MSEmail.Domain.Enums;
 using MSEmail.Infra.Business;
 using MSEmail.Infra.Repository;
+using MSEmail.API.Controllers.Base;
 
 namespace MsEmail.API.Controllers;
 
-[ApiController]
 [RequisitionFilter]
-[Route("api/[controller]")]
-public class EmailController : ControllerBase
+public class EmailController : BaseController
 {
     private readonly EmailRepository _emails;
     private readonly CommonLog _commonLog;
