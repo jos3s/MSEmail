@@ -1,5 +1,6 @@
 using MsEmail.Infra.Context;
 using MSEmail.Common.Utils;
+using MSEmail.Infra.Log;
 using MSEmail.PrepareEmail.Transaction;
 
 namespace MSEmail.PrepareEmail;
@@ -20,7 +21,7 @@ public class WorkerCreatedEmail : BackgroundService
     {
         while (!stoppingToken.IsCancellationRequested)
         {
-            if (ConfigHelper.GetRunWorkerDraftEmail)
+            if (ConfigHelper.GetRunWorkerCreatedEmail)
             {
                 _logger.LogInformation("Worker Created Email running at: {time}", DateTimeOffset.Now);
 
@@ -31,6 +32,8 @@ public class WorkerCreatedEmail : BackgroundService
                 #endregion
 
                 new ExecuteTRA(_context).Execute(Domain.Enums.EmailStatus.Created);
+                LogSingleton.Instance.CreateInformationLog($"{nameof(WorkerCreatedEmail)}.{nameof(ExecuteAsync)}", "", Domain.Enums.ServiceType.MSPrepareEmail);
+             
                 await Task.Delay(TimeSpan.FromMinutes(ConfigHelper.ServiceInterval), stoppingToken);
             }
         }

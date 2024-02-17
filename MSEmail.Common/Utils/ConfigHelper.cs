@@ -204,4 +204,34 @@ public class ConfigHelper
             }
         }
     }
+
+    public static string LogFileName
+    {
+        get
+        {
+            try
+            {
+                return GetConfiguration("LogFileName");
+            }
+            catch (Exception)
+            {
+                return "DefaultLog.txt";
+            }
+        }
+    }
+
+    public static string LogPath
+    {
+        get
+        {
+            try
+            {
+                return GetConfiguration("LogPath");
+            }
+            catch (Exception)
+            {
+                return "Logs";
+            }
+        }
+    }
 }
